@@ -1,4 +1,4 @@
-# scratch-3-api
+# scratch3-api
 
 A remake of [trumank's scratch-api](https://www.npmjs.com/package/scratch-api) optimized for scratch 3.0. It not only adds to the api, but is also composed completely of promises to prevent [callback hell](http://callbackhell.com/). So, instead of
 
@@ -17,7 +17,7 @@ Scratch.UserSession.load(function (err, user) {
 you can do
 
 ```js
-const Scratch = require("scratch-3-api");
+const Scratch = require("scratch3-api");
 
 async function main() {
   let session = new Scratch.UserSession();
