@@ -45,5 +45,5 @@ npm install scratch3-api
 Or by cloning this repository:
 
 ```sh
-git clone https://github.com/ErrorGamer2000/scratch--api.git
+git clone https://github.com/ErrorGamer2000/scratch3-api.git
 ```
