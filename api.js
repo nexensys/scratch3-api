@@ -5,3 +5,5 @@ let Scratch = {
   UserSession: UserSession,
   CloudSession: CloudSession
 };
+
+module.exports = Scratch;
