@@ -6,3 +6,9 @@ const s2n = require("stringstonumbers"),
   UserSession = require("./lib/usersession");
 
 let Scratch = {};
+
+(async () => {
+  let s = new UserSession();
+  await s.load();
+  
+})()

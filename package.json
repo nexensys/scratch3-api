@@ -4,7 +4,7 @@
   "description": "",
   "main": "api.js",
   "scripts": {
-    "test": "node api.js"
+    "test": "node test.js"
   },
   "author": "ErrorGamer2000",
   "license": "MIT",
