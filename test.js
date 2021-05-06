@@ -5,10 +5,12 @@ const s2n = require("stringstonumbers"),
   Listenable = require("listenable"),
   UserSession = require("./lib/usersession");
 
-let Scratch = {};
+let Scratch = {
+  UserSession: UserSession,
+};
 
 (async () => {
-  let s = new UserSession();
+  let s = new Scratch.UserSession();
   await s.load();
-  
+  await s.verify();
 })()

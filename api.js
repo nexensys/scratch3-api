@@ -5,4 +5,6 @@ const s2n = require("stringstonumbers"),
   Listenable = require("listenable"),
   UserSession = require("./lib/usersession");
 
-let Scratch = {};
+let Scratch = {
+  UserSession: UserSession,
+};
