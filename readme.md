@@ -1,6 +1,6 @@
 # scratch3-api
 
-A remake of [trumank's scratch-api](https://www.npmjs.com/package/scratch-api) optimized for scratch 3.0. It not only adds to the api, but is also composed completely of promises to prevent [callback hell](http://callbackhell.com/). So, instead of
+A remake of [trumank's scratch-api](https://www.npmjs.com/package/scratch-api) optimized for scratch 3.0. It not only adds to the api, but is also composed mostly of promises to prevent [callback hell](http://callbackhell.com/). So, instead of
 
 ```js
 const Scratch = require("scratch-api");
@@ -8,7 +8,7 @@ const Scratch = require("scratch-api");
 Scratch.UserSession.load(function (err, user) {
   user.cloudSession("<project>", function (err, cloud) {
     cloud.on("set", function (name, value) {
-      console.log(name, value);
+      console.log(`${name} was set to ${value}`);
     });
   });
 });
