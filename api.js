@@ -1,10 +1,7 @@
-const s2n = require("stringstonumbers"),
-  https = require("https"),
-  util = require("util"),
-  WebSocket = require("ws"),
-  Listenable = require("listenable"),
-  UserSession = require("./lib/usersession");
+const UserSession = require("./lib/usersession");
+const CloudSession = require("./lib/cloudsession");
 
 let Scratch = {
   UserSession: UserSession,
+  CloudSession: CloudSession
 };
