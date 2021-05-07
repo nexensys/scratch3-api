@@ -20,9 +20,9 @@ you can do
 const Scratch = require("scratch3-api");
 
 async function main() {
-  let session = new Scratch.UserSession();
-  await session.load("<username>", "<password>");
-  let cloud = new Scratch.CloudSession("<project>", session);
+  let user = new Scratch.UserSession();
+  await user.load("<username>", "<password>");
+  let cloud = user.cloudSession("<project>");
   await cloud.connect();
   cloud.on("set", (name, value) => {
     console.log(`${name} was set to ${value}`);
