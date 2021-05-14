@@ -30,7 +30,7 @@ async function main() {
 main();
 ```
 
-which is a lot easier to read. If, for some reason, you *like* callback hell, you can just use `.then()`.
+which is a lot easier to read. If, for some reason, you _like_ callback hell, you can just use `.then()`.
 
 ```js
 const Scratch = require("scratch3-api");
@@ -92,6 +92,7 @@ git clone https://github.com/ErrorGamer2000/scratch3-api.git
 ---
 
 <a name="us"></a>
+
 ### UserSession
 
 ---
@@ -187,11 +188,13 @@ Adds a comment on the specified project, user, or studio.
 **`projects`**
 
 <a name="usprojectsget"></a>
+
 - **async `get(id)`** Gets a project with the given id.
   - `id` - The id of the project to get.
   - `returns` `Project`. (see [`Other APIs`](#otherapis))
 
 <a name="usprojectsgetuserprojects"></a>
+
 - **async `getUserProjects(limit)`** Gets up to 40 projects of the currently logged in user.
   - `limit` - A number from 1 to 40. The maximum amount of the user's projects to get.
   - `returns` an `Array` of `Project`s.
@@ -207,6 +210,7 @@ Creates and connects a new `CloudSession` with the `UserSession`.
 - `returns` a connected `CloudSession`
 
 <a name="cs"></a>
+
 ### CloudSession
 
 - `extends` EventEmitter
