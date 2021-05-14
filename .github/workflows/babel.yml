@@ -11,9 +11,9 @@ jobs:
         with:
           node-version: 14.x
       - name: Other setup
+        run: echo Setup Complete!
         env:
           PACKAGE_UPDATE: false
-        run: echo Setup Complete!
       - name: Get changed files
         id: changed-files
         uses: tj-actions/changed-files@v2.1
