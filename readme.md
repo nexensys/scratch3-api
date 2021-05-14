@@ -52,13 +52,13 @@ git clone https://github.com/ErrorGamer2000/scratch3-api.git
 
 ### Scratch
 
-- [`UserSession`](#UserSession)
+- [`UserSession`](#us)
   - static [`create`](#uscreate)
-  - [`constructor`]()
-  - [`projects`]()
-  - [`load`]()
+  - [`constructor`](#usconstructor)
+  - [`load`](#usload)
   - [`prompt`]() (Deprecated)
   - [`verify`]()
+  - [`projects`]()
   - [`comment`]()
   - [`cloudSession`]()
 - [`CloudSession`]()
@@ -72,17 +72,36 @@ git clone https://github.com/ErrorGamer2000/scratch3-api.git
   - [`stringify`]()
   - [`name`]()
 
-<a name="UserSession"></a>
+<a name="us"></a>
 #### UserSession
 
 <a name="uscreate"></a>
 **async static `create(username, password)`**
 
-Creates a new `UserSession`. Note that
+Creates and loads a new `UserSession` with the given username and password. If either is not provided the user will be prompted.
+
+- `username` - The Scratch account username (not case sensitive).
+- `password` - - The Scratch account password.
+- `returns` a loaded `Scratch.Usersession`.
+
+Note that
 ```js
 //Async
-let session = await UserSession.create("<username", "<password>")
+let session = await Scratch.UserSession.create("<username", "<password>");
 ```
 is exactly the same as 
 ```js
 //Async
+let session = new Scratch.UserSession();
+await session.load("<username", "<password>");
+```
+
+<a name="usconstructor"></a>
+**`constructor`**
+
+Creates a new, unloaded, `Scratch.Usersession`.
+
+No parameters.
+
+<a name="usload"></a>
+**async `load(username, password)`**
