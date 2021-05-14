@@ -81,7 +81,7 @@ git clone https://github.com/ErrorGamer2000/scratch3-api.git
 Creates and loads a new `UserSession` with the given username and password. If either is not provided the user will be prompted.
 
 - `username` - The Scratch account username (not case sensitive).
-- `password` - - The Scratch account password.
+- `password` - The Scratch account password.
 - `returns` a loaded `Scratch.Usersession`.
 
 Note that
