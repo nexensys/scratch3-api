@@ -53,7 +53,7 @@ git clone https://github.com/ErrorGamer2000/scratch3-api.git
 ### Scratch
 
 - [`UserSession`](#UserSession)
-  - static [`create`]()
+  - static [`create`](#uscreate)
   - [`constructor`]()
   - [`projects`]()
   - [`load`]()
@@ -75,4 +75,5 @@ git clone https://github.com/ErrorGamer2000/scratch3-api.git
 <a name="UserSession"></a>
 #### UserSession
 
+<a name="uscreate"></a>
 **async static `create`**
