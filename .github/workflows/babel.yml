@@ -10,6 +10,14 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 14.x
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v5.3
+      - name: List all modified files
+        run: |
+          for file in "${{ steps.changed-files.outputs.all_modified_files }}"; do
+            echo "$file was modified"
+          done
       - name: Install Babel
         run: npm install @babel/core @babel/cli @babel/plugin-transform-arrow-functions
       - name: Format code
