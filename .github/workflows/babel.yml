@@ -1,0 +1,20 @@
+name: Format code using Babel
+on: [push]
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14.x
+      - name: Install Babel
+        run: npm install @babel/core @babel/cli @babel/plugin-transform-arrow-functions
+      - name: Format code
+        run: ./node_modules/.bin/babel lib --out-dir lib
+      - name: Commit changed files
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "format code"
