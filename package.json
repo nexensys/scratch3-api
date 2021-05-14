@@ -9,6 +9,9 @@
   "author": "ErrorGamer2000",
   "license": "MIT",
   "dependencies": {
+    "@babel/cli": "^7.13.16",
+    "@babel/core": "^7.14.2",
+    "@babel/plugin-transform-arrow-functions": "^7.13.0",
     "listenable": "^0.1.0",
     "prompt": "^1.1.0",
     "stringstonumbers": "^2.3.1",
