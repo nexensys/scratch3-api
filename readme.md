@@ -47,3 +47,32 @@ Or by cloning this repository:
 ```sh
 git clone https://github.com/ErrorGamer2000/scratch3-api.git
 ```
+
+## API Documentation
+
+### Scratch
+
+- [`UserSession`] (#UserSession)
+  - static [`create`] ()
+  - [`constructor`] ()
+  - [`projects`] ()
+  - [`load`] ()
+  - [`prompt`] () (Deprecated)
+  - [`verify`] ()
+  - [`comment`] ()
+  - [`cloudSession`] ()
+- [`CloudSession`] ()
+  - static [`create`] ()
+  - [`constructor`] ()
+  - [`connect`] ()
+  - [`end`] ()
+  - [`get`] ()
+  - [`set`] ()
+  - [`numerify`] ()
+  - [`stringify`] ()
+  - [`name`] ()
+
+<a name="UserSession"></a>
+#### UserSession
+
+**async static `create`**
