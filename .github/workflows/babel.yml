@@ -11,17 +11,14 @@ jobs:
         with:
           node-version: 14.x
       - name: Install Babel
-        run: npm install --global @babel/core
-      - name: Install Babel Cli
-        run: npm install --global @babel/cli
-      - name: Install Babel Plugin
-        run: npm install --global @babel/plugin-transform-arrow-functions
+        run: npm install @babel/core @babel/cli @babel/plugin-transform-arrow-functions
       - name: Format code
-        run: babel lib --out-dir lib --plugins=@babel/plugin-transform-arrow-functions
+        run: ./node_modules/.bin/babel lib --out-dir lib --plugins=@babel/plugin-transform-arrow-functions
       - name: Commit changed files
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "format code"
+          file_pattern: "lib/*.js"
       - name: Repository Dispatch
         uses: peter-evans/repository-dispatch@v1
         with:
