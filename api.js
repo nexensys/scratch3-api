@@ -3,7 +3,7 @@ const CloudSession = require("./lib/cloudsession");
 
 let Scratch = {
   UserSession: UserSession,
-  CloudSession: CloudSession
+  CloudSession: CloudSession,
 };
 
 module.exports = Scratch;

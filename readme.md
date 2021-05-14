@@ -73,6 +73,7 @@ git clone https://github.com/ErrorGamer2000/scratch3-api.git
   - [`name`]()
 
 <a name="us"></a>
+
 #### UserSession
 
 <a name="uscreate"></a>
@@ -85,11 +86,14 @@ Creates and loads a new `UserSession` with the given username and password. If e
 - `returns` a loaded `Scratch.Usersession`.
 
 Note that
+
 ```js
 //Async
 let session = await Scratch.UserSession.create("<username", "<password>");
 ```
-is exactly the same as 
+
+is exactly the same as
+
 ```js
 //Async
 let session = new Scratch.UserSession();
