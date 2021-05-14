@@ -20,3 +20,10 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "format code"
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          repository: ErrorGamer2000/scratch3-api
+          event-type: prettier-finish
+          client-payload: '{"update": ${{github.event.client_payload.update}}}'
