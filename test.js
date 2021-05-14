@@ -7,4 +7,4 @@ const Scratch = require("./api.js");
   console.log(p[0]);
 })();
 
-""
+("");
