@@ -18,7 +18,7 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "format code"
-          file_pattern: "lib/*.js"
+          file_pattern: "lib/*.js" # Prevent auto-commit from commiting the node_modules used in the workflow
       - name: Repository Dispatch
         uses: peter-evans/repository-dispatch@v1
         with:
