@@ -14,7 +14,7 @@
     "@babel/plugin-transform-arrow-functions": "^7.13.0",
     "listenable": "^0.1.0",
     "prompt": "^1.1.0",
-    "stringstonumbers": "^2.3.1",
+    "stringstonumbers": "^3.2.0",
     "ws": "^7.4.5"
   },
   "devDependencies": {},
