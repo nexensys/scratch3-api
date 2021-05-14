@@ -4,8 +4,8 @@
 name: Node.js Package
 
 on:
-  release:
-    types: [created]
+  repository_dispatch:
+    types: [prettier-finish]
 
 jobs:
   build:
