@@ -76,4 +76,13 @@ git clone https://github.com/ErrorGamer2000/scratch3-api.git
 #### UserSession
 
 <a name="uscreate"></a>
-**async static `create`**
+**async static `create(username, password)`**
+
+Creates a new `UserSession`. Note that
+```js
+//Async
+let session = await UserSession.create("<username", "<password>")
+```
+is exactly the same as 
+```js
+//Async
