@@ -1,6 +1,9 @@
 name: Format code using Babel
 on: [push]
 
+env:
+  PACKAGE_UPDATE: false
+
 jobs:
   format:
     runs-on: ubuntu-latest
@@ -17,6 +20,7 @@ jobs:
         if: contains(steps.changed-files.outputs.all_modified_files, "package.json")
         env:
           PACKAGE_UPDATE: true
+        run: echo Preparing to publish...
       - name: Install Babel
         run: npm install @babel/core @babel/cli @babel/plugin-transform-arrow-functions
       - name: Format code
