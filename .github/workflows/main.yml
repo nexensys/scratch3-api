@@ -1,5 +1,7 @@
 name: Format code using Prettier
-on: [push]
+on: 
+  repository_dispatch:
+    types: [babel-finish]
 
 jobs:
   format:
