@@ -35,4 +35,4 @@ jobs:
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
           repository: ErrorGamer2000/scratch3-api
           event-type: babel-finish
-          client-payload: '{"update": ${{env.PACKAGE_UPDATE}}}`
+          client-payload: '{"update": ${{env.PACKAGE_UPDATE}}}'
