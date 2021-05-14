@@ -17,7 +17,7 @@ jobs:
         id: changed-files
         uses: tj-actions/changed-files@v2.1
       - name: Package has been updated...
-        if: contains(steps.changed-files.outputs.all_modified_files, "package.json")
+        if: contains(steps.changed-files.outputs.all_modified_files, 'package.json')
         env:
           PACKAGE_UPDATE: true
         run: echo Preparing to publish...
