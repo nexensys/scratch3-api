@@ -312,6 +312,7 @@ Automatically adds the `☁` to the variable name.
 ---
 
 <a name="otherapis"></a>
+
 ### Other APIs
 
 ---
@@ -335,7 +336,6 @@ Each `Project` instance will be formatted like this:
 - `sprites` - An `Array` of [`Sprite`](#otherapissprite)s.
 
 ---
-
 
 <a name="otherapissprite"></a>
 **`Sprite`**
