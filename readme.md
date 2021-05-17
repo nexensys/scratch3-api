@@ -294,4 +294,64 @@ Turns the string input into a number, allowing you to send any value across the 
 <a name="csstringify"></a>
 **`stringify(number)`**
 
-...Unfinished
+Turns the encoded number input and converts it back to a string.
+
+- `number` - The number to convert back to a string.
+- `returns` a `String` matching the origionally encoded string.
+
+---
+
+<a name="csname"></a>
+**`name(variable)`**
+
+Automatically adds the `☁` to the variable name.
+
+- `name` - The name of the variable (without `☁ `)
+- `returns` `☁` + `variable`.
+
+---
+
+<a name="otherapis"></a>
+### Other APIs
+
+---
+
+<a name="otherapisproject"></a>
+**`Project`**
+
+The `Project` class reformats a response from Scratch's project api into an easy-to-use object.
+
+Each `Project` instance will be formatted like this:
+
+- `stage` - A [`Sprite`](#otherapissprite) instance describing the project's stage.
+- <a name="projectvars"></a>`variables` - An object containing all of the variables in the project. To retreive the names of these variables, use `Object.keys`.
+  - `id` - A `String` containing the variable's id. This is not really of much use unless you are working with [Scratch Blocks](https://github.com/LLK/scratch-blocks).
+  - `spriteOnly` - A `Boolean`. True if the variable has 'this sprite only' checked.
+  - `sprite` - A `String` with the variable's parent sprite. `null` if `spriteOnly` is `false`.
+  - `value` - A `String` or `Array` (if the variable is a list) containing the value of the variables. In the case of cloud variables this may not be accurate as this value is only saved when a project is saved.
+  - `type` - A `String` containing the type of the variable, either `variable` or `list`.
+  - `isCloud` - A `Boolean`. True if the variable is a cloud variable.
+- `spritenames` - An `Array` of `String`s containing the names of all of the sprites in the project.
+- `sprites` - An `Array` of [`Sprite`](#otherapissprite)s.
+
+---
+
+
+<a name="otherapissprite"></a>
+**`Sprite`**
+
+The `Sprite` class reformats the sprite objects in Scratch's project api's responses.
+
+Each `Sprite` instance will be formatted like this:
+
+- `variables` - See [`Project - variables`](#projectvars).
+- `lists` - See [`Project - variables`](#projectvars).
+- `broadcasts` - An `Array` of `String`s containing each of the project's broadcast messages.
+- `blocks` - An `Array` containing the blocks in the `Sprite`'s workspace.
+- `comments` - An `Array` containing the comments in the `Sprite`'s workspace.
+- `isStage` - A `Boolean`. True if the `Sprite` is the stage.
+- `name` - A `String` containing the `Sprite`'s name.
+- `costumes` - An array of the `Sprite`'s costumes.
+- `sounds` - An array of the `Sprite`'s sounds.
+- `volume` - A `Number` containing the `Sprite`'s volume.
+- `layer` - A `Number` containing the `Sprite`'s layer in the project.
