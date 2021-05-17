@@ -1,9 +1,6 @@
 name: Format code
 on: [push]
 
-env:
-  PACKAGE_UPDATE: false
-
 jobs:
   babel:
     runs-on: ubuntu-latest
@@ -16,11 +13,6 @@ jobs:
       - name: Get changed files
         id: changed-files
         uses: tj-actions/changed-files@v2.1
-      - name: Package has been updated...
-        if: contains(steps.changed-files.outputs.all_modified_files, 'package.json')
-        env:
-          PACKAGE_UPDATE: 'true'
-        run: echo Preparing to publish...
       - name: Install Babel
         run: npm install @babel/core @babel/cli @babel/plugin-transform-arrow-functions
       - name: Format code
@@ -49,7 +41,7 @@ jobs:
           commit_message: "format code"
   publish-build:
     needs: prettier
-    if: ${{ env.PACKAGE_UPDATE == 'true'}}
+    if: contains(steps.changed-files.outputs.all_modified_files, 'package.json')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
