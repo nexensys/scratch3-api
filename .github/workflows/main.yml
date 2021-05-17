@@ -3,6 +3,7 @@ on: [push]
 
 jobs:
   babel:
+    if: "!contains(github.event.head_commit.message, 'format code')"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
