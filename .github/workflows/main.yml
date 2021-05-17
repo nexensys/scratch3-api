@@ -19,7 +19,7 @@ jobs:
       - name: Package has been updated...
         if: contains(steps.changed-files.outputs.all_modified_files, 'package.json')
         env:
-          PACKAGE_UPDATE: true
+          PACKAGE_UPDATE: 'true'
         run: echo Preparing to publish...
       - name: Install Babel
         run: npm install @babel/core @babel/cli @babel/plugin-transform-arrow-functions
@@ -49,7 +49,7 @@ jobs:
           commit_message: "format code"
   publish-build:
     needs: prettier
-    if: ${{env.PACKAGE_UPDATE}}
+    if: ${{ env.PACKAGE_UPDATE == 'true'}}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
