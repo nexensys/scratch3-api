@@ -10,9 +10,6 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 14.x
-      - name: Get changed files
-        id: changed-files
-        uses: tj-actions/changed-files@v2.1
       - name: Install Babel
         run: npm install @babel/core @babel/cli @babel/plugin-transform-arrow-functions
       - name: Format code
@@ -39,44 +36,16 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "format code"
-  publish-build:
+  publish:
     needs: prettier
-    if: contains(steps.changed-files.outputs.all_modified_files, 'package.json')
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v2.1
+      - name: Dispatch
+        if: contains(steps.changed-files.outputs.all_modified_files, 'package.json')
+        uses: peter-evans/repository-dispatch@v1
         with:
-          node-version: 14.x
-      - run: npm ci
-      - run: npm test
-  publish-npm:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: 14.x
-          registry-url: https://registry.npmjs.org/
-      - run: npm ci
-      - run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
-
-  publish-gpr:
-    needs: build
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: 14.x
-          registry-url: https://npm.pkg.github.com/
-      - run: npm ci
-      - run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          event-type: publish
