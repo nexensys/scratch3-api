@@ -15,6 +15,8 @@ jobs:
         run: npm install @babel/core @babel/cli @babel/plugin-transform-arrow-functions
       - name: Format code
         run: ./node_modules/.bin/babel lib --out-dir lib --plugins=@babel/plugin-transform-arrow-functions
+      - name: Uninstall Babel
+        run: npm uninstall @babel/core @babel/cli @babel/plugin-transform-arrow-functions
       - name: Commit changed files
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
