@@ -9,15 +9,15 @@
   "author": "ErrorGamer2000",
   "license": "MIT",
   "dependencies": {
-    "@babel/cli": "^7.13.16",
-    "@babel/core": "^7.14.2",
-    "@babel/plugin-transform-arrow-functions": "^7.13.0",
-    "listenable": "^0.1.0",
     "prompt": "^1.1.0",
     "stringstonumbers": "^3.2.0",
     "ws": "^7.4.5"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@babel/cli": "^7.13.16",
+    "@babel/core": "^7.14.2",
+    "@babel/plugin-transform-arrow-functions": "^7.13.0"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/ErrorGamer2000/scratch3-api.git"
