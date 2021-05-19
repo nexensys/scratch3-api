@@ -12,7 +12,7 @@ jobs:
         with:
           node-version: 14.x
       - name: Install Babel
-        run: npm install @babel/core @babel/cli @babel/plugin-transform-arrow-functions --save-dev
+        run: npm ci --save-dev
       - name: Format code
         run: ./node_modules/.bin/babel lib --out-dir lib --plugins=@babel/plugin-transform-arrow-functions
       - name: Commit changed files
