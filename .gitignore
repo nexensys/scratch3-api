@@ -1,6 +1,4 @@
-#Ignore github files
-
-**/.github
+*.github
 
 *.prettierignore
 
