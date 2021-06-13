@@ -1,9 +1,11 @@
 const UserSession = require("./lib/usersession");
 const CloudSession = require("./lib/cloudsession");
+const { ProjectsStatic: Projects } = require("./lib/projects");
 
 let Scratch = {
-  UserSession: UserSession,
-  CloudSession: CloudSession,
+  UserSession,
+  CloudSession,
+  Projects,
 };
 
 module.exports = Scratch;
