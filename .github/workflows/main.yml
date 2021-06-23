@@ -19,7 +19,7 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "format code"
-          file_pattern: "':!node_modules/*'" # Prevent auto-commit from commiting the node_modules used in the workflow
+          file_pattern: ":!node_modules/*" # Prevent auto-commit from commiting the node_modules used in the workflow
   prettier:
     needs: babel
     runs-on: ubuntu-latest
