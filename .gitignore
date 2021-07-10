@@ -3,3 +3,5 @@
 *.prettierignore
 
 test.js
+
+node_modules/
