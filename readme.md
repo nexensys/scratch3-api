@@ -202,11 +202,12 @@ Adds a comment on the specified project, user, or studio.
 ---
 
 <a name="uscloudsession"></a>
-**async `cloudSession(project)`**
+**async `cloudSession(project, turbowarp)`**
 
 Creates and connects a new `CloudSession` with the `UserSession`.
 
 - `project` - The id of the project to connect to. Must be valid.
+- `turbowarp` - Whether the WebSocket should connect to the Turbowarp cloud(`true`) or Scratch cloud(`false`).
 - `returns` a connected `CloudSession`
 
 <a name="cs"></a>
@@ -226,23 +227,25 @@ Creates and connects a new `CloudSession` with the `UserSession`.
 ---
 
 <a name="cscreate"></a>
-**static `create(usersession, project)`**
+**static `create(usersession, project, turbowarp)`**
 
 Creates and connects a new `CloudSession` with the given `UserSession`.
 
 - `usersession` - Required. The `UserSession` to create the `CloudSession` with.
 - `project` - The id of the project to connect to. Must be valid.
+- `turbowarp` - Whether the WebSocket should connect to the Turbowarp cloud(`true`) or Scratch cloud(`false`).
 - `returns` a connected `CloudSession`.
 
 ---
 
 <a name="csconstructor"></a>
-**`constructor(usersession, project)`**
+**`constructor(usersession, project, turbowarp)`**
 
 Creates a new, unconnected `CloudSession` with the given `UserSession`.
 
 - `usersession` - Required. The `UserSession` to create the `CloudSession` with.
 - `project` - The id of the project to connect to. Must be valid.
+- `turbowarp` - Whether the WebSocket should connect to the Turbowarp cloud(`true`) or Scratch cloud(`false`).
 - `returns` an unconnected `CloudSession`.
 
 ---
@@ -265,6 +268,8 @@ Ends the current connection.
 **`get(variable)`**
 
 Gets the value of a cloud variable.
+
+When using turbowarp, if the variable has not been changed since the server has started, this will return `undefined` due to the slight difference between the two WebSocket servers.
 
 - `variable` - The name of the variable to get (including the `☁ `, see [`name`](#csname)).
 - `returns` a `String` containing the value of the variable.
