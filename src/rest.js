@@ -1,27 +1,22 @@
 "use strict";
 
-const {
-  getJSON
-} = require("../request");
-
-class API {
-  get conference() {
-    return new Conference();
-  }
-
-  get users() {
-    return new Users();
-  }
-
-}
+import { getJSON } from "./request";
 
 class Conference {
   async scheduleForDay(day, zidx = true) {
-    let days = ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"].map(function (day) {
+    let days = [
+      "Saturday",
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday"
+    ].map(function(day) {
       return day.toLowerCase();
     });
 
-    let d = function () {
+    let d = (function() {
       switch (typeof day) {
         case "string":
           if (days.includes(day)) {
@@ -31,7 +26,8 @@ class Conference {
           }
 
         case "number":
-          if (Math.floor(day) !== day) throw new Error("Day of week must be an integer");
+          if (Math.floor(day) !== day)
+            throw new Error("Day of week must be an integer");
 
           if (zidx) {
             if (day < 6 && day >= 0) {
@@ -46,9 +42,8 @@ class Conference {
 
             throw new Error(`${day} is not a valid day of the week`);
           }
-
       }
-    }();
+    })();
 
     return await getJSON({
       hostname: "api.scratch.mit.edu",
@@ -62,7 +57,6 @@ class Conference {
       path: `/conference/${id}/details`
     });
   }
-
 }
 
 class Users {
@@ -110,10 +104,14 @@ class Users {
       offset += 40;
     }
   }
-
 }
 
-module.exports = {
-  conference: new Conference(),
-  users: new Users()
+const conference = new Conference();
+const users = new Users();
+
+const Rest = {
+  conference,
+  users
 };
+
+export default Rest;

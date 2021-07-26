@@ -1,27 +1,31 @@
 "use strict";
 
-const {
-  getJSON
-} = require("../request");
+import { request } from "./request";
 
 class Project {
   constructor(d) {
-    this.stage = new Sprite(d.targets.filter(function (s) {
-      return s.isStage;
-    })[0]);
+    this.stage = new Sprite(
+      d.targets.filter(function(s) {
+        return s.isStage;
+      })[0]
+    );
     this.variables = {};
-    let globalVars = Object.keys(d.targets.filter(function (s) {
-      return s.isStage;
-    })[0].variables).map(function (k) {
-      return d.targets.filter(function (s) {
+    let globalVars = Object.keys(
+      d.targets.filter(function(s) {
+        return s.isStage;
+      })[0].variables
+    ).map(function(k) {
+      return d.targets.filter(function(s) {
         return s.isStage;
       })[0].variables[k];
     });
-    let cloudVars = globalVars.filter(function (v) {
-      return !!v[2];
-    }).map(function (v) {
-      return v[0];
-    });
+    let cloudVars = globalVars
+      .filter(function(v) {
+        return !!v[2];
+      })
+      .map(function(v) {
+        return v[0];
+      });
 
     for (let m of d.monitors) {
       if (m.id === "answer") continue;
@@ -35,18 +39,17 @@ class Project {
       };
     }
 
-    this.spritenames = d.targets.map(function (s) {
+    this.spritenames = d.targets.map(function(s) {
       return s.name;
     });
     this.sprites = [];
 
-    for (let t of d.targets.filter(function (s) {
+    for (let t of d.targets.filter(function(s) {
       return !s.isStage;
     })) {
       this.sprites.push(new Sprite(t));
     }
   }
-
 }
 
 class Sprite {
@@ -93,7 +96,6 @@ class Sprite {
     this.volume = d.volume;
     this.layer = d.layerOrder;
   }
-
 }
 
 class Projects {
@@ -102,23 +104,36 @@ class Projects {
   }
 
   async get(id) {
-    return new Project(await getJSON({
-      hostname: "projects.scratch.mit.edu",
-      path: `/${id}`
-    }));
+    return new Project(
+      await (0, _request.getJSON)({
+        hostname: "projects.scratch.mit.edu",
+        path: `/${id}`
+      })
+    );
   }
 
   async getUserProjects(limit = 40) {
     let t = this.usersession;
     if (!t) return null;
-    if (limit > 40 || limit < 1 || Math.floor(limit) !== limit) throw new Error(`Error: Invalid project limit. The limit parameter must be ${limit > 40 ? "less that 40" : limit < 1 ? "greater that or equal to 1" : "an integer"}.`);
-    let p = await getJSON({
+    if (limit > 40 || limit < 1 || Math.floor(limit) !== limit)
+      throw new Error(
+        `Error: Invalid project limit. The limit parameter must be ${
+          limit > 40
+            ? "less that 40"
+            : limit < 1
+              ? "greater that or equal to 1"
+              : "an integer"
+        }.`
+      );
+    let p = await (0, _request.getJSON)({
       hostname: "api.scratch.mit.edu",
-      path: `/users/${typeof t === "object" ? t.username : t}/projects?limit=${typeof limit === "number" ? limit : 40}`
+      path: `/users/${typeof t === "object" ? t.username : t}/projects?limit=${
+        typeof limit === "number" ? limit : 40
+      }`
     });
     let realp = [];
 
-    for (let project of p.map(function (i) {
+    for (let project of p.map(function(i) {
       return i.id;
     })) {
       realp.push(await this.get(project));
@@ -126,8 +141,9 @@ class Projects {
 
     return realp;
   }
-
 }
+
+export default Projects;
 
 class ProjectsStatic {
   static async get(id) {
@@ -137,10 +153,6 @@ class ProjectsStatic {
   static async getUserProjects(un, limit = 40) {
     return await new Projects(un).getUserProjects(limit);
   }
-
 }
 
-module.exports = {
-  Projects,
-  ProjectsStatic
-};
+export { Projects, ProjectsStatic };

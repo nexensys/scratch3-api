@@ -1,14 +1,13 @@
 "use strict";
 
-const https = require("https");
+import https from "https";
 /**
  * Make a request to the scratch servers
  * @param {Object} o Options object
  * @returns Https response
  */
 
-
-const request = async function (o) {
+const request = async function(o) {
   let h = {
     Cookie: "scratchcsrftoken=a; scratchlanguage=en;",
     "X-CSRFToken": "a",
@@ -29,22 +28,26 @@ const request = async function (o) {
     }
   }
 
-  let p = new Promise(function (resolve) {
-    let r = https.request({
-      hostname: o.hostname || "scratch.mit.edu",
-      port: 443,
-      path: o.path,
-      method: o.method || "GET",
-      headers: h
-    }, function (res) {
-      let p = [];
-      res.on("data", function (c) {
-        return p.push(c);
-      });
-      res.on("end", function () {
-        return resolve([null, Buffer.concat(p).toString(), res]);
-      });
-    });
+  let p = new Promise(function(resolve) {
+    let r = https.default.request(
+      {
+        hostname: o.hostname || "scratch.mit.edu",
+        port: 443,
+        path: o.path,
+        method: o.method || "GET",
+        headers: h
+      },
+      function(res) {
+        let p = [];
+        res.on("data", function(c) {
+          return p.push(c);
+        });
+        res.on("end", function() {
+          return resolve([null, Buffer.concat(p).toString(), res]);
+        });
+      }
+    );
+
     r.on("error", resolve);
 
     if (o.body) {
@@ -61,13 +64,9 @@ const request = async function (o) {
  * @returns {Object} Parsed response
  */
 
-
-const getJSON = async function (o) {
+const getJSON = async function(o) {
   let [e, b, r] = await request(o);
   return JSON.parse(b);
 };
 
-module.exports = {
-  request: request,
-  getJSON: getJSON
-};
+export { request, getJSON };

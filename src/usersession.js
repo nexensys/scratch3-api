@@ -1,13 +1,12 @@
 "use strict";
 
-const prompt = require("prompt"),
-  util = require("util"),
-  CloudSession = require("../cloudsession"),
-  { Projects } = require("../projects");
+import prompt from "prompt";
+import util from "util";
+import CloudSession from "./cloudsession";
+import Projects from "./projects";
+import { request } from "./request";
 
-const { request } = require("../request");
-
-const parse = function (cookie) {
+const parse = function(cookie) {
   let c = {};
   let e = cookie.split(";");
 
@@ -71,7 +70,8 @@ class UserSession {
 
     if (!username) {
       prompt.start();
-      let r = await new Promise(function (resolve, reject) {
+
+      let r = await new Promise(function(resolve, reject) {
         prompt.get(
           [
             {
@@ -79,7 +79,7 @@ class UserSession {
               required: true
             }
           ],
-          function (e, r) {
+          function(e, r) {
             if (e) reject(e);
             else resolve(r);
           }
@@ -92,7 +92,8 @@ class UserSession {
 
     if (!password) {
       prompt.start();
-      let r = await new Promise(function (resolve, reject) {
+
+      let r = await new Promise(function(resolve, reject) {
         prompt.get(
           [
             {
@@ -102,7 +103,7 @@ class UserSession {
               replace: "•"
             }
           ],
-          function (e, r) {
+          function(e, r) {
             if (e) reject(e);
             else resolve(r);
           }
@@ -145,7 +146,7 @@ class UserSession {
    */
 
   async prompt() {
-    await new Promise(function (resolve) {
+    await new Promise(function(resolve) {
       return setTimeout(resolve, 0);
     }); //Allow deprecation warning to show before prompt
 
@@ -157,7 +158,7 @@ class UserSession {
    */
 
   async verify() {
-    let [e, body, res] = await request({});
+    let [e, body, res] = request({});
     this.valid = !e && res.statusCode === 200;
     return this.valid;
   }
@@ -198,7 +199,9 @@ class UserSession {
         referer: `https://scratch.mit.edu/users/${this.username}`,
         "X-Requested-With": "XMLHttpRequest",
         "x-csrftoken": "a",
-        Cookie: `scratchcsrftoken=a;scratchlanguage=en;scratchsessionsid=${this.sessionId};`
+        Cookie: `scratchcsrftoken=a;scratchlanguage=en;scratchsessionsid=${
+          this.sessionId
+        };`
       },
       path: "/site-api/comments/" + t + "/" + id + "/add/",
       method: "POST",
@@ -224,4 +227,5 @@ UserSession.prototype.prompt = util.deprecate(
   UserSession.prototype.prompt,
   "<UserSession>.prompt is deprecated. Use <UserSession>.load without parameters instead."
 );
-module.exports = UserSession;
+
+export default UserSession;

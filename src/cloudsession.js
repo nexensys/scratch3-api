@@ -1,18 +1,22 @@
 "use strict";
 
-const { EventEmitter } = require("events");
+import EventEmmitter from "events";
+import WebSocket from "ws";
+import s2n from "stringstonumbers";
 
-const WebSocket = require("ws"),
-  s2n = require("stringstonumbers");
 /**
  * ClousSession API.
  * @extends EventEmitter
  * @property {UserSession} user - UserSession that the CloudSession was created with.
  * @property {number|string} id - The id of the project that the CloudSession is connecting to.
- * @property {WebSocket} connection - WebSocket connection that is used.
  */
 
+
 class CloudSession extends EventEmitter {
+  #connection = null
+  #_variables = Object.create(null)
+  variables = Object.create(null)
+  attemptedPackets = []
   /**
    * @param {UserSession} user - The UserSession to create the CloudSession with.
    * @param {number|string} proj - The ID of the project to connect to.
@@ -22,10 +26,6 @@ class CloudSession extends EventEmitter {
     this.user = user;
     this.id = proj;
     this.usetw = turbowarp;
-    this.connection = null;
-    this.attemptedPackets = [];
-    this.variables = Object.create(null);
-    this._variables = Object.create(null);
   }
   /**
    * Create a new, connected CloudSession.
@@ -35,8 +35,9 @@ class CloudSession extends EventEmitter {
    * @returns {Promise<CloudSession>}
    */
 
+
   static async create(user, proj, turbowarp) {
-    let s = new this(user, proj, turbowarp);
+    let s = new CloudSession(user, proj, turbowarp);
     await s.connect();
     return s;
   }
@@ -46,27 +47,22 @@ class CloudSession extends EventEmitter {
    * @fires CloudSession#set
    */
 
+
   async connect() {
-    this.connection = new WebSocket(
-      `wss://${
-        this.usetw ? "clouddata.turbowarp.org" : "clouddata.scratch.mit.edu"
-      }/`,
-      [],
-      {
-        headers: {
-          cookie: `${
-            this.usetw ? "" : `scratchsessionsid=${this.user.sessionId}`
-          };`,
-          origin: "https://scratch.mit.edu"
-        }
+    this.#connection = new WebSocket(`wss://${this.usetw ? "clouddata.turbowarp.org" : "clouddata.scratch.mit.edu"}/`, [], {
+      headers: {
+        cookie: `${this.usetw ? "" : `scratchsessionsid=${this.user.sessionId}`};`,
+        origin: "https://scratch.mit.edu"
       }
-    );
+    });
     let self = this;
-    this.connection.on("open", function () {
-      self._sendHandshake();
+    let handshake = this.#sendHandshake;
+    let sendPacket = this.#sendPacket;
+    this.#connection.on("open", function () {
+      handshake();
 
       for (let packet of self.attemptedPackets) {
-        self._sendPacket(packet);
+        sendPacket(packet);
       }
 
       self.attemptedPackets = [];
@@ -77,12 +73,14 @@ class CloudSession extends EventEmitter {
 
       self.emit("reset");
     });
-    this.connection.on("close", function () {
+    this.#connection.on("close", function () {
       self.connect();
     });
     let s = "";
+
+    let handlePacket = this.#handlePacket;
     if (!this.usetw) {
-      this.connection.on("message", function (c) {
+      this.#connection.on("message", function (c) {
         s += c;
         let p = s.split("\n");
         s = p.pop();
@@ -97,11 +95,11 @@ class CloudSession extends EventEmitter {
             return;
           }
 
-          self._handlePacket(t);
+          handlePacket(t);
         }
       });
     } else {
-      this.connection.on("message", function (p) {
+      this.#connection.on("message", function (p) {
         for (let m of p.split("\n")) {
           let t;
 
@@ -111,12 +109,16 @@ class CloudSession extends EventEmitter {
             console.warn(`Invalid packet:\n${l}`);
             return;
           }
-          self._handlePacket(t);
+
+          handlePacket(t);
         }
       });
     }
+
+    let connection = this.#connection;
+
     await new Promise(function (resolve) {
-      self.connection.on("open", function () {
+      connection.on("open", function () {
         self.emit("open");
         resolve();
       });
@@ -126,6 +128,7 @@ class CloudSession extends EventEmitter {
   /**
    * Ends the WebSocket connection.
    */
+
 
   end() {
     if (this.connection) {
@@ -138,6 +141,7 @@ class CloudSession extends EventEmitter {
    * @returns {string} The variable's value.
    */
 
+
   get(n) {
     return this._variables[n];
   }
@@ -147,15 +151,15 @@ class CloudSession extends EventEmitter {
    * @param {*} v - The value to set the variable to.
    */
 
-  set(n, v) {
-    if (isNaN(Number(v)))
-      console.warn("Only number values can be stored in cloud variables.");
-    this._variables[n] = v;
 
-    this._sendSet(n, v);
+  set(n, v) {
+    if (isNaN(Number(v))) console.warn("Only number values can be stored in cloud variables.");
+    this.#_variables[n] = v;
+
+    this.#sendSet(n, v);
   }
 
-  _handlePacket(p) {
+  #handlePacket(p) {
     if (!p) return;
     let t;
 
@@ -167,10 +171,10 @@ class CloudSession extends EventEmitter {
 
     if (t.method === "set") {
       if (!{}.hasOwnProperty.call(this.variables, t.name)) {
-        this._addVariable(t.name, t.value);
+        this.#addVariable(t.name, t.value);
       }
 
-      this._variables[t.name] = t.value;
+      this.#_variables[t.name] = t.value;
       /**
        * A cloud variable was set by a user.
        * @event CloudSession#set
@@ -184,18 +188,18 @@ class CloudSession extends EventEmitter {
     }
   }
 
-  _sendHandshake() {
-    this._send("handshake", {});
+  #sendHandshake() {
+    this.#send("handshake", {});
   }
 
-  _sendSet(n, v) {
-    this._send("set", {
+  #sendSet(n, v) {
+    this.#send("set", {
       name: n,
       value: v
     });
   }
 
-  _send(m, o) {
+  #send(m, o) {
     let t = {
       user: this.user.username,
       project_id: this.id,
@@ -206,10 +210,10 @@ class CloudSession extends EventEmitter {
       t[op] = o[op];
     }
 
-    this._sendPacket(JSON.stringify(t) + "\n");
+    this.#sendPacket(JSON.stringify(t) + "\n");
   }
 
-  _sendPacket(d) {
+  #sendPacket(d) {
     if (this.connection.readyState === WebSocket.OPEN) {
       this.connection.send(d);
     } else {
@@ -217,7 +221,7 @@ class CloudSession extends EventEmitter {
     }
   }
 
-  _addVariable(n, v) {
+  #addVariable(n, v) {
     let self = this;
     this._variables[n] = v;
     Object.defineProperty(this.variables, n, {
@@ -236,21 +240,14 @@ class CloudSession extends EventEmitter {
    * @returns {string}
    */
 
+
   name(n) {
     return `☁ ${n}`;
   }
+
 }
 
-Object.defineProperties(CloudSession.prototype, {
-  numerify: {
-    value: s2n.encode,
-    enumerable: false,
-    writable: false
-  },
-  stringify: {
-    value: s2n.decode,
-    enumerable: false,
-    writable: false
-  }
-});
-module.exports = CloudSession;
+CloudSession.prototype.numerify = s2n.encode;
+CloudSession.prototype.stringify = s2n.decode;
+
+export default CloudSession;
