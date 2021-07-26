@@ -1,11 +1,6 @@
 "use strict";
 
 import https from "https";
-/**
- * Make a request to the scratch servers
- * @param {Object} o Options object
- * @returns Https response
- */
 
 const request = async function (o) {
   let h = {
@@ -58,11 +53,6 @@ const request = async function (o) {
   });
   return await p;
 };
-/**
- *
- * @param {Object} o Options object
- * @returns {Object} Parsed response
- */
 
 const getJSON = async function (o) {
   let [e, b, r] = await request(o);

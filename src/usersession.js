@@ -35,6 +35,7 @@ class UserSession {
     this.loaded = false;
     this.valid = false;
   }
+
   /**
    * Create a new UserSession with the given username and password.
    * @async
@@ -42,7 +43,6 @@ class UserSession {
    * @param  {string} [password] - The password to log in with. If missing user will be prompted.
    * @returns {UserSession} - A loaded UserSession.
    */
-
   static async create(...a) {
     let s = new this();
     await s.load(...a);
@@ -56,13 +56,13 @@ class UserSession {
   get projects() {
     return new Projects(this);
   }
+
   /**
    * Load a blank UserSession with the given username and password.
    * @async
    * @param  {string} [username] - The username to log in with. If missing user will be prompted.
    * @param  {string} [password] - The password to log in with. If missing user will be prompted.
    */
-
   async load(username, password) {
     if (this.loaded) return;
     let un = username,
@@ -140,11 +140,11 @@ class UserSession {
       throw new Error(e);
     }
   }
+
   /**
    * Prompt the user for a username amnd password to load the UserSession with
    * @async
    */
-
   async prompt() {
     await new Promise(function (resolve) {
       return setTimeout(resolve, 0);
@@ -152,16 +152,17 @@ class UserSession {
 
     return await this.load();
   }
+
   /**
    * Verify the loaded UserSession
    * @returns {boolean} Whether the session is valid or not
    */
-
   async verify() {
-    let [e, body, res] = request({});
+    let [e, body, res] = await request({});
     this.valid = !e && res.statusCode === 200;
     return this.valid;
   }
+
   /**
    * Add a comment
    * @async
@@ -172,9 +173,7 @@ class UserSession {
    * @param {string|number} [o.parent] - Comment to reply to.
    * @param {string} [o.replyto] - The user id to address (@username ...).
    * @param {string} [o.content=""] - The text of the comment to post.
-   * @returns {[null, string, httpsresponse]}
    */
-
   async comment(o) {
     if (!this.valid) {
       await this.verify();
@@ -193,7 +192,7 @@ class UserSession {
       id = o.studio;
     }
 
-    return await request({
+    await request({
       hostname: "scratch.mit.edu",
       headers: {
         referer: `https://scratch.mit.edu/users/${this.username}`,
@@ -211,11 +210,12 @@ class UserSession {
       sessionId: this.sessionId
     });
   }
+
   /**
    * Create a new CloudSession with the current UserSession.
    * @param {string|number} proj - ID of the project to connect to.
+   * @returns {CloudSession} A loaded CloudSession.
    */
-
   async cloudSession(proj, turbowarp) {
     return await CloudSession.create(this, proj, turbowarp);
   }

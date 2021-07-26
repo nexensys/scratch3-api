@@ -162,7 +162,7 @@ class UserSession {
 
 
   async verify() {
-    let [e, body, res] = (0, _request.request)({});
+    let [e, body, res] = await (0, _request.request)({});
     this.valid = !e && res.statusCode === 200;
     return this.valid;
   }
@@ -176,7 +176,6 @@ class UserSession {
    * @param {string|number} [o.parent] - Comment to reply to.
    * @param {string} [o.replyto] - The user id to address (@username ...).
    * @param {string} [o.content=""] - The text of the comment to post.
-   * @returns {[null, string, httpsresponse]}
    */
 
 
@@ -198,7 +197,7 @@ class UserSession {
       id = o.studio;
     }
 
-    return await (0, _request.request)({
+    await (0, _request.request)({
       hostname: "scratch.mit.edu",
       headers: {
         referer: `https://scratch.mit.edu/users/${this.username}`,
@@ -219,6 +218,7 @@ class UserSession {
   /**
    * Create a new CloudSession with the current UserSession.
    * @param {string|number} proj - ID of the project to connect to.
+   * @returns {CloudSession} A loaded CloudSession.
    */
 
 

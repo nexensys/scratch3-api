@@ -1,7 +1,19 @@
 "use strict";
 
-import { request } from "./request";
+import { getJSON } from "./request";
 
+/**
+ * Project variable.
+ * @typedef {Object} Variable
+ * @property {string} id - The variable's blockly id.
+ * @property {boolean} spriteOnly - Whether the variable is for that sprite only.
+ */
+
+/**
+ * Project container class.
+ * @param {Sprite} stage - The project's stage sprite.
+ * @param {Object.<string, Variable>} variables - The project's variables.
+ */
 class Project {
   constructor(d) {
     this.stage = new Sprite(
@@ -105,7 +117,7 @@ class Projects {
 
   async get(id) {
     return new Project(
-      await (0, _request.getJSON)({
+      await getJSON({
         hostname: "projects.scratch.mit.edu",
         path: `/${id}`
       })
@@ -125,7 +137,7 @@ class Projects {
             : "an integer"
         }.`
       );
-    let p = await (0, _request.getJSON)({
+    let p = await getJSON({
       hostname: "api.scratch.mit.edu",
       path: `/users/${typeof t === "object" ? t.username : t}/projects?limit=${
         typeof limit === "number" ? limit : 40

@@ -9,18 +9,10 @@ var _events = _interopRequireDefault(require("events"));
 
 var _ws = _interopRequireDefault(require("ws"));
 
-var _stringstonumbers = _interopRequireDefault(require("stringstonumbers"));
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-/**
- * ClousSession API.
- * @extends EventEmitter
- * @property {UserSession} user - UserSession that the CloudSession was created with.
- * @property {number|string} id - The id of the project that the CloudSession is connecting to.
- */
 const privateProps = {
   connection: new WeakMap(),
   variables: new WeakMap(),
@@ -31,8 +23,15 @@ const privateProps = {
   sendPacket: new WeakMap(),
   addVariable: new WeakMap()
 };
+/**
+ * ClousSession API.
+ * @extends EventEmitter
+ * @property {UserSession} user - UserSession that the CloudSession was created with.
+ * @property {number|string} id - The id of the project that the CloudSession is connecting to.
+ * @property {object} variables - Project variables.
+ */
 
-class CloudSession extends EventEmitter {
+class CloudSession extends _events.default {
   /**
    * @param {UserSession} user - The UserSession to create the CloudSession with.
    * @param {number|string} proj - The ID of the project to connect to.
@@ -40,7 +39,7 @@ class CloudSession extends EventEmitter {
   constructor(user, proj, turbowarp = false) {
     super();
 
-    _defineProperty(this, "variables", Object.create(null));
+    _defineProperty(this, "variables", {});
 
     _defineProperty(this, "attemptedPackets", []);
 
@@ -60,7 +59,7 @@ class CloudSession extends EventEmitter {
       }
 
       if (t.method === "set") {
-        if (!{}.hasOwnProperty.call(this.variables, t.name)) {
+        if (!this.variables.hasOwnProperty(t.name)) {
           privateProps.addVariable.get(this)(t.name, t.value);
         }
 
@@ -110,7 +109,6 @@ class CloudSession extends EventEmitter {
       let self = this;
       privateProps.variables.get(this)[n] = v;
       Object.defineProperty(this.variables, n, {
-        enumerable: true,
         get: function () {
           return self.get(n);
         },
@@ -125,7 +123,7 @@ class CloudSession extends EventEmitter {
    * @async
    * @param {UserSession} user - The UserSession to create the CloudSession with.
    * @param {number|string} proj - The ID of the project to connect to.
-   * @returns {Promise<CloudSession>}
+   * @returns {CloudSession} A loaded CloudSession.
    */
 
 
@@ -215,10 +213,9 @@ class CloudSession extends EventEmitter {
         resolve();
       });
     });
-    return;
   }
   /**
-   * Ends the WebSocket connection.
+   * End the WebSocket connection.
    */
 
 
@@ -260,9 +257,34 @@ class CloudSession extends EventEmitter {
     return `☁ ${n}`;
   }
 
+  numerify(s = "") {
+    const chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%()*+,-./\\:;=?@[]^_`{|}~\"'&<> ";
+    let r = "";
+
+    for (let l of String(s)) {
+      r += chars.indexOf(l) + 1 < 10 ? `0${chars.indexOf(l) + 1}` : `${chars.indexOf(l) + 1}`;
+    }
+
+    return `${r}00`;
+  }
+
+  stringify(n, l = 0) {
+    const chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%()*+,-./\\:;=?@[]^_`{|}~\"'&<> ";
+    let r = "";
+    let t = String(n).slice(l).match(/[0-9][0-9]?/g);
+
+    for (let c in t) {
+      if (t[c] === "00") {
+        return r;
+      }
+
+      r += chars[t[c] - 1];
+    }
+
+    return r;
+  }
+
 }
 
-CloudSession.prototype.numerify = _stringstonumbers.default.encode;
-CloudSession.prototype.stringify = _stringstonumbers.default.decode;
 var _default = CloudSession;
 exports.default = _default;
