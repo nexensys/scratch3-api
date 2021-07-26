@@ -1,31 +1,30 @@
 "use strict";
 
-import { request } from "./request";
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ProjectsStatic = exports.Projects = exports.default = void 0;
+
+var _request2 = require("./request");
 
 class Project {
   constructor(d) {
-    this.stage = new Sprite(
-      d.targets.filter(function (s) {
-        return s.isStage;
-      })[0]
-    );
+    this.stage = new Sprite(d.targets.filter(function (s) {
+      return s.isStage;
+    })[0]);
     this.variables = {};
-    let globalVars = Object.keys(
-      d.targets.filter(function (s) {
-        return s.isStage;
-      })[0].variables
-    ).map(function (k) {
+    let globalVars = Object.keys(d.targets.filter(function (s) {
+      return s.isStage;
+    })[0].variables).map(function (k) {
       return d.targets.filter(function (s) {
         return s.isStage;
       })[0].variables[k];
     });
-    let cloudVars = globalVars
-      .filter(function (v) {
-        return !!v[2];
-      })
-      .map(function (v) {
-        return v[0];
-      });
+    let cloudVars = globalVars.filter(function (v) {
+      return !!v[2];
+    }).map(function (v) {
+      return v[0];
+    });
 
     for (let m of d.monitors) {
       if (m.id === "answer") continue;
@@ -50,6 +49,7 @@ class Project {
       this.sprites.push(new Sprite(t));
     }
   }
+
 }
 
 class Sprite {
@@ -96,6 +96,7 @@ class Sprite {
     this.volume = d.volume;
     this.layer = d.layerOrder;
   }
+
 }
 
 class Projects {
@@ -104,32 +105,19 @@ class Projects {
   }
 
   async get(id) {
-    return new Project(
-      await (0, _request.getJSON)({
-        hostname: "projects.scratch.mit.edu",
-        path: `/${id}`
-      })
-    );
+    return new Project(await (0, _request.getJSON)({
+      hostname: "projects.scratch.mit.edu",
+      path: `/${id}`
+    }));
   }
 
   async getUserProjects(limit = 40) {
     let t = this.usersession;
     if (!t) return null;
-    if (limit > 40 || limit < 1 || Math.floor(limit) !== limit)
-      throw new Error(
-        `Error: Invalid project limit. The limit parameter must be ${
-          limit > 40
-            ? "less that 40"
-            : limit < 1
-            ? "greater that or equal to 1"
-            : "an integer"
-        }.`
-      );
+    if (limit > 40 || limit < 1 || Math.floor(limit) !== limit) throw new Error(`Error: Invalid project limit. The limit parameter must be ${limit > 40 ? "less that 40" : limit < 1 ? "greater that or equal to 1" : "an integer"}.`);
     let p = await (0, _request.getJSON)({
       hostname: "api.scratch.mit.edu",
-      path: `/users/${typeof t === "object" ? t.username : t}/projects?limit=${
-        typeof limit === "number" ? limit : 40
-      }`
+      path: `/users/${typeof t === "object" ? t.username : t}/projects?limit=${typeof limit === "number" ? limit : 40}`
     });
     let realp = [];
 
@@ -141,9 +129,12 @@ class Projects {
 
     return realp;
   }
+
 }
 
-export default Projects;
+exports.Projects = Projects;
+var _default = Projects;
+exports.default = _default;
 
 class ProjectsStatic {
   static async get(id) {
@@ -153,6 +144,7 @@ class ProjectsStatic {
   static async getUserProjects(un, limit = 40) {
     return await new Projects(un).getUserProjects(limit);
   }
+
 }
 
-export { Projects, ProjectsStatic };
+exports.ProjectsStatic = ProjectsStatic;

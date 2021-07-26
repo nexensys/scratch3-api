@@ -1,10 +1,21 @@
 "use strict";
 
-import prompt from "prompt";
-import util from "util";
-import CloudSession from "./cloudsession";
-import Projects from "./projects";
-import { request } from "./request";
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _prompt = _interopRequireDefault(require("prompt"));
+
+var _util = _interopRequireDefault(require("util"));
+
+var _cloudsession = _interopRequireDefault(require("./cloudsession"));
+
+var _projects = _interopRequireDefault(require("./projects"));
+
+var _request = require("./request");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const parse = function (cookie) {
   let c = {};
@@ -27,6 +38,7 @@ const parse = function (cookie) {
  * @param {boolean} valid - the login was sucessful and accepted by the scratch servers.
  */
 
+
 class UserSession {
   /**
    * Create a blank UserSession
@@ -43,6 +55,7 @@ class UserSession {
    * @returns {UserSession} - A loaded UserSession.
    */
 
+
   static async create(...a) {
     let s = new this();
     await s.load(...a);
@@ -53,8 +66,9 @@ class UserSession {
    * @returns {Projects} - Project API
    */
 
+
   get projects() {
-    return new Projects(this);
+    return new _projects.default(this);
   }
   /**
    * Load a blank UserSession with the given username and password.
@@ -63,27 +77,22 @@ class UserSession {
    * @param  {string} [password] - The password to log in with. If missing user will be prompted.
    */
 
+
   async load(username, password) {
     if (this.loaded) return;
     let un = username,
-      pw = password;
+        pw = password;
 
     if (!username) {
-      prompt.start();
+      _prompt.default.start();
 
       let r = await new Promise(function (resolve, reject) {
-        prompt.get(
-          [
-            {
-              name: "Username",
-              required: true
-            }
-          ],
-          function (e, r) {
-            if (e) reject(e);
-            else resolve(r);
-          }
-        );
+        _prompt.default.get([{
+          name: "Username",
+          required: true
+        }], function (e, r) {
+          if (e) reject(e);else resolve(r);
+        });
       });
       un = r.Username;
     }
@@ -91,29 +100,23 @@ class UserSession {
     this.username = un;
 
     if (!password) {
-      prompt.start();
+      _prompt.default.start();
 
       let r = await new Promise(function (resolve, reject) {
-        prompt.get(
-          [
-            {
-              name: "Password",
-              required: true,
-              hidden: true,
-              replace: "•"
-            }
-          ],
-          function (e, r) {
-            if (e) reject(e);
-            else resolve(r);
-          }
-        );
+        _prompt.default.get([{
+          name: "Password",
+          required: true,
+          hidden: true,
+          replace: "•"
+        }], function (e, r) {
+          if (e) reject(e);else resolve(r);
+        });
       });
       pw = r.Password;
     }
 
     this.password = pw;
-    let [err, body, res] = await request({
+    let [err, body, res] = await (0, _request.request)({
       path: "/login/",
       method: "POST",
       body: JSON.stringify({
@@ -135,8 +138,7 @@ class UserSession {
       this.token = u.token;
       return;
     } catch (e) {
-      if (e instanceof SyntaxError)
-        throw new Error("Scratch servers are down. Try again later.");
+      if (e instanceof SyntaxError) throw new Error("Scratch servers are down. Try again later.");
       throw new Error(e);
     }
   }
@@ -144,6 +146,7 @@ class UserSession {
    * Prompt the user for a username amnd password to load the UserSession with
    * @async
    */
+
 
   async prompt() {
     await new Promise(function (resolve) {
@@ -157,8 +160,9 @@ class UserSession {
    * @returns {boolean} Whether the session is valid or not
    */
 
+
   async verify() {
-    let [e, body, res] = request({});
+    let [e, body, res] = (0, _request.request)({});
     this.valid = !e && res.statusCode === 200;
     return this.valid;
   }
@@ -174,6 +178,7 @@ class UserSession {
    * @param {string} [o.content=""] - The text of the comment to post.
    * @returns {[null, string, httpsresponse]}
    */
+
 
   async comment(o) {
     if (!this.valid) {
@@ -193,7 +198,7 @@ class UserSession {
       id = o.studio;
     }
 
-    return await request({
+    return await (0, _request.request)({
       hostname: "scratch.mit.edu",
       headers: {
         referer: `https://scratch.mit.edu/users/${this.username}`,
@@ -216,14 +221,13 @@ class UserSession {
    * @param {string|number} proj - ID of the project to connect to.
    */
 
+
   async cloudSession(proj, turbowarp) {
-    return await CloudSession.create(this, proj, turbowarp);
+    return await _cloudsession.default.create(this, proj, turbowarp);
   }
+
 }
 
-UserSession.prototype.prompt = util.deprecate(
-  UserSession.prototype.prompt,
-  "<UserSession>.prompt is deprecated. Use <UserSession>.load without parameters instead."
-);
-
-export default UserSession;
+UserSession.prototype.prompt = _util.default.deprecate(UserSession.prototype.prompt, "<UserSession>.prompt is deprecated. Use <UserSession>.load without parameters instead.");
+var _default = UserSession;
+exports.default = _default;

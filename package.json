@@ -2,15 +2,15 @@
   "name": "scratch3-api",
   "version": "3.5.1",
   "description": "A remake of trumank's scratch-api optimized for scratch 3.0.",
-  "main": "./dist/cjs/api.js",
+  "main": "./dist/api.js",
   "exports": {
-    "require": "./dist/cjs/api.js",
-    "import": "./dist/mjs/api.js"
+    "require": "./dist/api.js",
+    "import": "./src/api.js"
   },
   "scripts": {
     "test": "node test.js",
-    "prettier": "npx prettier --write dist/**/*.*",
-    "build": "node build.js"
+    "prettier": "npx prettier --write **/*.*",
+    "babel": "npx babel src --out-dir dist"
   },
   "author": "ErrorGamer2000",
   "license": "MIT",
@@ -20,9 +20,8 @@
     "ws": "^7.4.5"
   },
   "devDependencies": {
+    "@babel/cli": "^7.14.8",
     "@babel/core": "^7.14.8",
-    "@babel/plugin-proposal-private-methods": "^7.14.5",
-    "@babel/plugin-transform-arrow-functions": "^7.13.0",
     "@babel/preset-env": "^7.14.8"
   },
   "repository": {

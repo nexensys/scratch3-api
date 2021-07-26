@@ -1,12 +1,19 @@
 "use strict";
 
-import https from "https";
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getJSON = exports.request = void 0;
+
+var _https = _interopRequireDefault(require("https"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 /**
  * Make a request to the scratch servers
  * @param {Object} o Options object
  * @returns Https response
  */
-
 const request = async function (o) {
   let h = {
     Cookie: "scratchcsrftoken=a; scratchlanguage=en;",
@@ -29,24 +36,21 @@ const request = async function (o) {
   }
 
   let p = new Promise(function (resolve) {
-    let r = https.default.request(
-      {
-        hostname: o.hostname || "scratch.mit.edu",
-        port: 443,
-        path: o.path,
-        method: o.method || "GET",
-        headers: h
-      },
-      function (res) {
-        let p = [];
-        res.on("data", function (c) {
-          return p.push(c);
-        });
-        res.on("end", function () {
-          return resolve([null, Buffer.concat(p).toString(), res]);
-        });
-      }
-    );
+    let r = _https.default.default.request({
+      hostname: o.hostname || "scratch.mit.edu",
+      port: 443,
+      path: o.path,
+      method: o.method || "GET",
+      headers: h
+    }, function (res) {
+      let p = [];
+      res.on("data", function (c) {
+        return p.push(c);
+      });
+      res.on("end", function () {
+        return resolve([null, Buffer.concat(p).toString(), res]);
+      });
+    });
 
     r.on("error", resolve);
 
@@ -64,9 +68,12 @@ const request = async function (o) {
  * @returns {Object} Parsed response
  */
 
+
+exports.request = request;
+
 const getJSON = async function (o) {
   let [e, b, r] = await request(o);
   return JSON.parse(b);
 };
 
-export { request, getJSON };
+exports.getJSON = getJSON;

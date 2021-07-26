@@ -1,22 +1,19 @@
 "use strict";
 
-import { getJSON } from "./request";
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _request = require("./request");
 
 class Conference {
   async scheduleForDay(day, zidx = true) {
-    let days = [
-      "Saturday",
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday"
-    ].map(function (day) {
+    let days = ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"].map(function (day) {
       return day.toLowerCase();
     });
 
-    let d = (function () {
+    let d = function () {
       switch (typeof day) {
         case "string":
           if (days.includes(day)) {
@@ -26,8 +23,7 @@ class Conference {
           }
 
         case "number":
-          if (Math.floor(day) !== day)
-            throw new Error("Day of week must be an integer");
+          if (Math.floor(day) !== day) throw new Error("Day of week must be an integer");
 
           if (zidx) {
             if (day < 6 && day >= 0) {
@@ -42,26 +38,28 @@ class Conference {
 
             throw new Error(`${day} is not a valid day of the week`);
           }
-      }
-    })();
 
-    return await getJSON({
+      }
+    }();
+
+    return await (0, _request.getJSON)({
       hostname: "api.scratch.mit.edu",
       path: `/conference/schedule/${d}`
     });
   }
 
   async detailsFor(id) {
-    return await getJSON({
+    return await (0, _request.getJSON)({
       hostname: "api.scratch.mit.edu",
       path: `/conference/${id}/details`
     });
   }
+
 }
 
 class Users {
   async get(username) {
-    return await getJSON({
+    return await (0, _request.getJSON)({
       hostname: "api.scratch.mit.edu",
       path: `/users/${username}`
     });
@@ -72,7 +70,7 @@ class Users {
     let offset = 0;
 
     while (true) {
-      let batch = await getJSON({
+      let batch = await (0, _request.getJSON)({
         hostname: "api.scratch.mit.edu",
         path: `/users/${username}/following?limit=40&offset=${offset}`
       });
@@ -91,7 +89,7 @@ class Users {
     let offset = 0;
 
     while (true) {
-      let batch = await getJSON({
+      let batch = await (0, _request.getJSON)({
         hostname: "api.scratch.mit.edu",
         path: `/users/${username}/followers?limit=40&offset=${offset}`
       });
@@ -104,14 +102,14 @@ class Users {
       offset += 40;
     }
   }
+
 }
 
 const conference = new Conference();
 const users = new Users();
-
 const Rest = {
   conference,
   users
 };
-
-export default Rest;
+var _default = Rest;
+exports.default = _default;
