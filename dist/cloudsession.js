@@ -256,29 +256,51 @@ class CloudSession extends _events.default {
   name(n) {
     return `☁ ${n}`;
   }
+  /**
+   * Convert a string to a sequence of numbers that can be stored in a cloud variable.
+   * @param {string} [s=""] - The string to convert.
+   * @returns {string} A sequence of numbers representing the input string.
+   */
+
 
   numerify(s = "") {
     const chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%()*+,-./\\:;=?@[]^_`{|}~\"'&<> ";
     let r = "";
 
     for (let l of String(s)) {
+      if (chars.indexOf(l) < 0) {
+        r += String(chars.length + 1);
+        continue;
+      }
+
       r += chars.indexOf(l) + 1 < 10 ? `0${chars.indexOf(l) + 1}` : `${chars.indexOf(l) + 1}`;
     }
 
     return `${r}00`;
   }
+  /**
+   * Cinvert a sequence of numbers into the represented string.
+   * @param {string|number} [n=""] - The number to convert.
+   * @param {number} l - The letter of the input number to start the conversion at.
+   * @returns {string} The converted string.
+   */
 
-  stringify(n, l = 0) {
+
+  stringify(n = "", l = 0) {
     const chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%()*+,-./\\:;=?@[]^_`{|}~\"'&<> ";
     let r = "";
     let t = String(n).slice(l).match(/[0-9][0-9]?/g);
 
-    for (let c in t) {
-      if (t[c] === "00") {
+    for (let c of t) {
+      if (c === "00") {
         return r;
       }
 
-      r += chars[t[c] - 1];
+      if (c > chars.length) {
+        continue;
+      }
+
+      r += chars[c - 1];
     }
 
     return r;
