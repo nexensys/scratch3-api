@@ -5,8 +5,20 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ProjectsStatic = exports.Projects = exports.default = void 0;
 
-var _request2 = require("./request");
+var _request = require("./request");
 
+/**
+ * Project variable.
+ * @typedef {Object} Variable
+ * @property {string} id - The variable's blockly id.
+ * @property {boolean} spriteOnly - Whether the variable is for that sprite only.
+ */
+
+/**
+ * Project container class.
+ * @param {Sprite} stage - The project's stage sprite.
+ * @param {Object.<string, Variable>} variables - The project's variables.
+ */
 class Project {
   constructor(d) {
     this.stage = new Sprite(d.targets.filter(function (s) {
