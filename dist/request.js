@@ -9,11 +9,6 @@ var _https = _interopRequireDefault(require("https"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Make a request to the scratch servers
- * @param {Object} o Options object
- * @returns Https response
- */
 const request = async function (o) {
   let h = {
     Cookie: "scratchcsrftoken=a; scratchlanguage=en;",
@@ -62,12 +57,6 @@ const request = async function (o) {
   });
   return await p;
 };
-/**
- *
- * @param {Object} o Options object
- * @returns {Object} Parsed response
- */
-
 
 exports.request = request;
 
