@@ -92,9 +92,9 @@ import { UserSession, CloudSession, Projects, Rest } from "scratch3-api";
 - [`CloudSession`](#cloudsession)
 - [`Projects`](#project-api)
 - [`Rest`](#rest-api)
-- [`Other APIs`](#otherapis)
-  - [`Project`](#otherapisproject)
-  - [`Sprite`](#otherapissprite)
+- [`Other APIs`](#other-apis)
+  - [`Project`](#project)
+  - [`Sprite`](#sprite)
 
 ## UserSession
 
