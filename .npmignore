@@ -1,4 +1,7 @@
-package-lock.json
 babel.config.json
 .prettierignore
 .gitignore
+.github/
+package-lock.json
+test.js
+node_modules/
