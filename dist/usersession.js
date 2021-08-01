@@ -9,11 +9,11 @@ var _prompt = _interopRequireDefault(require("prompt"));
 
 var _util = _interopRequireDefault(require("util"));
 
-var _cloudsession = _interopRequireDefault(require("./cloudsession"));
+var _cloudsession = _interopRequireDefault(require("./cloudsession.js"));
 
-var _projects = _interopRequireDefault(require("./projects"));
+var _projects = _interopRequireDefault(require("./projects.js"));
 
-var _request = require("./request");
+var _request = require("./request.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

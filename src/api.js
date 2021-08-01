@@ -1,9 +1,9 @@
 "use strict";
 
-import UserSession from "./usersession";
-import CloudSession from "./cloudsession";
-import { ProjectsStatic as Projects } from "./projects";
-import Rest from "./rest";
+import UserSession from "./usersession.js";
+import CloudSession from "./cloudsession.js";
+import { ProjectsStatic as Projects } from "./projects.js";
+import Rest from "./rest.js";
 
 const Scratch = {
   UserSession,

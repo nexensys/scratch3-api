@@ -1,6 +1,6 @@
 "use strict";
 
-import { getJSON } from "./request";
+import { getJSON } from "./request.js";
 
 class Conference {
   async scheduleForDay(day, zidx = true) {

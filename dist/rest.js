@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _request = require("./request");
+var _request = require("./request.js");
 
 class Conference {
   async scheduleForDay(day, zidx = true) {

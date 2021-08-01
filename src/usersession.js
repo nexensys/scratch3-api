@@ -2,9 +2,9 @@
 
 import prompt from "prompt";
 import util from "util";
-import CloudSession from "./cloudsession";
-import Projects from "./projects";
-import { request } from "./request";
+import CloudSession from "./cloudsession.js";
+import Projects from "./projects.js";
+import { request } from "./request.js";
 
 const parse = function (cookie) {
   let c = {};

@@ -29,13 +29,13 @@ Object.defineProperty(exports, "Rest", {
 });
 exports.default = void 0;
 
-var _usersession = _interopRequireDefault(require("./usersession"));
+var _usersession = _interopRequireDefault(require("./usersession.js"));
 
-var _cloudsession = _interopRequireDefault(require("./cloudsession"));
+var _cloudsession = _interopRequireDefault(require("./cloudsession.js"));
 
-var _projects = require("./projects");
+var _projects = require("./projects.js");
 
-var _rest = _interopRequireDefault(require("./rest"));
+var _rest = _interopRequireDefault(require("./rest.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

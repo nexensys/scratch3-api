@@ -1,6 +1,6 @@
 {
   "name": "scratch3-api",
-  "version": "3.5.4",
+  "version": "3.5.5",
   "description": "A remake of trumank's scratch-api optimized for scratch 3.0.",
   "main": "./dist/api.js",
   "exports": {
@@ -8,8 +8,6 @@
     "import": "./src/api.js"
   },
   "scripts": {
-    "test": "node test.js",
-    "prettier": "npx prettier --write **/*.*",
     "babel": "npx babel src --out-dir dist"
   },
   "author": "ErrorGamer2000",
