@@ -31,7 +31,7 @@ const request = async function (o) {
   }
 
   let p = new Promise(function (resolve) {
-    let r = _https.default.default.request({
+    let r = _https.default.request({
       hostname: o.hostname || "scratch.mit.edu",
       port: 443,
       path: o.path,

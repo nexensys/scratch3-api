@@ -24,7 +24,7 @@ const request = async function (o) {
   }
 
   let p = new Promise(function (resolve) {
-    let r = https.default.request(
+    let r = https.request(
       {
         hostname: o.hostname || "scratch.mit.edu",
         port: 443,
