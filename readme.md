@@ -97,6 +97,7 @@ import { UserSession, CloudSession, Projects, Rest } from "scratch3-api";
 - [`Other APIs`](#other-apis)
   - [`Project`](#project-api)
   - [`Sprite`](#sprite-api)
+- [Credits](#contributors)
 
 ## UserSession API
 
@@ -216,3 +217,10 @@ Extends: [`EventEmitter`](https://nodejs.org/api/events.html#events_class_evente
   let cloud = Scratch.CloudSession.create(session, 60917032);
   ```
 - `constructor(user, proj, [turbowarp = false])`
+
+
+---
+
+## Contributors
+
+- [
