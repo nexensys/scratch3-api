@@ -1,3 +1,4 @@
+
 # scratch3-api
 
 > ### Now Supporting [Turbowarp](https://turbowarp.org)!
@@ -88,15 +89,15 @@ import { UserSession, CloudSession, Projects, Rest } from "scratch3-api";
 
 ## API Documentation
 
-- [`UserSession`](#usersession)
-- [`CloudSession`](#cloudsession)
-- [`Projects`](#project-api)
+- [`UserSession`](#usersession-api)
+- [`CloudSession`](#cloudsession-api)
+- [`Projects`](#projects-api)
 - [`Rest`](#rest-api)
 - [`Other APIs`](#other-apis)
-  - [`Project`](#project)
-  - [`Sprite`](#sprite)
+  - [`Project`](#project-api)
+  - [`Sprite`](#sprite-api)
 
-## UserSession
+## UserSession API
 
 The `UserSession` api handles the login and verification that makes the package to work. (Stored in the `session` variable for examples)
  
@@ -104,12 +105,13 @@ The `UserSession` api handles the login and verification that makes the package 
 ---
 #### Static Methods
 
-- `create(username, password)`
+- `create([username], [password])`
   - Creates and loads a new UserSession with the given username and password.
   - `username` - The Scratch account username (not case sensitive). Optional. If not provided user will be prompted.
   - `password` - The Scratch account password. Optional. If not provided user will be prompted.
   - `returns`: `Promise.<UserSession>`
-  <p /> <!--- For some reason this is needed to keep code from overlapping last bullet --->
+   <!--- For some reason this is needed to keep code from overlapping last bullet --->
+<p />
   
   ```js
   let session = await Scratch.UserSession.create("<username", "<password>");
@@ -129,7 +131,7 @@ The `UserSession` api handles the login and verification that makes the package 
   
 #### Instance Methods
 
-- `load(username, password)`
+- `load([username], [password])`
   - Loads the `UserSession` instance with the given name and password.
   - `username` - The Scratch account username (not case sensitive). Optional. If not provided user will be prompted.
   - `password` - The Scratch account password. Optional. If not provided user will be prompted.
@@ -140,7 +142,7 @@ The `UserSession` api handles the login and verification that makes the package 
   await session.load("<username", "<password>");
   ```
 - `prompt()`
-  > ⚠ Deprecated! Please use `<UserSession>.load` without parameters instead.
+  > ⚠ Deprecated! This feature will be removed soon. Please use `<UserSession>.load` without parameters instead.
   - Prompts the user for their username and password then loads the `UserSession`.
   - `returns`: `Promise.<undefined>`
   <p />
@@ -171,4 +173,40 @@ The `UserSession` api handles the login and verification that makes the package 
     project: 517845853,
     content: "Commented from Node.js with scratch3-api!"
   });
+  ```
+- `cloudSession(proj, [turbowarp = false])`
+	- Create a new [`CloudSession`](#cloudsession-api) for the specified project with the current `UserSession` and connects it.
+	- `proj` - The id of the project to connect to. Can be a string or number.
+	- `turbowarp` - Whether or not to connect to the [turbowarp](https://turbowarp.org) cloud servers instead of the scratch cloud servers.
+	<p />
+	
+  ```js
+	let cloud = await session.cloudSession(60917032);
+  ```
+
+### Instance Properties
+
+- `get` `projects` - Returns a new instance of the [`Projects`](#usersession-projects-api) api.
+- `loaded` - A boolean describing whether or not the session has been loaded with a username and password.
+- `valid` - A boolean describing whether or not the session is valid.
+- `username` - The username that the session was loaded with. Will not be defined if the `load()` method has not been called.
+- `password` - The password that the session was loaded with. Will not be defined if the `load()` method has not been called.
+- `id` - The user's id number.
+- `sessionId` - A string containing the scratch session id that the user is currently logged in with.
+- `token` - The session's scratch token.
+
+## CloudSession API
+
+### Methods
+---
+#### Static Methods
+
+- `create(user, proj, [turbowarp = false])`
+	- `user` - The `UserSession` to create the `CloudSession` with. If an invalid `UserSession` is provided, thing may break.
+	- `proj` - The id of the project to connect to. Can be a string or number.
+	- `turbowarp` - Whether or not to connect to the [turbowarp](https://turbowarp.org) cloud servers instead of the scratch cloud servers.
+	<p />
+	
+  ```js
+  let cloud = Scratch.CloudSession.create(session, 60917032);
   ```
