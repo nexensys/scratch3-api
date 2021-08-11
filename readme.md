@@ -1,4 +1,5 @@
 
+
 # scratch3-api
 
 > ### Now Supporting [Turbowarp](https://turbowarp.org)!
@@ -178,6 +179,7 @@ The `UserSession` api handles the login and verification that makes the package 
 	- Create a new [`CloudSession`](#cloudsession-api) for the specified project with the current `UserSession` and connects it.
 	- `proj` - The id of the project to connect to. Can be a string or number.
 	- `turbowarp` - Whether or not to connect to the [turbowarp](https://turbowarp.org) cloud servers instead of the scratch cloud servers.
+	- `returns`: `Promise.<CloudSession>`
 	<p />
 	
   ```js
@@ -197,6 +199,8 @@ The `UserSession` api handles the login and verification that makes the package 
 
 ## CloudSession API
 
+Extends: [`EventEmitter`](https://nodejs.org/api/events.html#events_class_eventemitter)
+
 ### Methods
 ---
 #### Static Methods
@@ -205,8 +209,10 @@ The `UserSession` api handles the login and verification that makes the package 
 	- `user` - The `UserSession` to create the `CloudSession` with. If an invalid `UserSession` is provided, thing may break.
 	- `proj` - The id of the project to connect to. Can be a string or number.
 	- `turbowarp` - Whether or not to connect to the [turbowarp](https://turbowarp.org) cloud servers instead of the scratch cloud servers.
+	- `returns`: `Promise.<CloudSession>`
 	<p />
 	
   ```js
   let cloud = Scratch.CloudSession.create(session, 60917032);
   ```
+- `constructor(user, proj, [turbowarp = false])`
