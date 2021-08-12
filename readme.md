@@ -223,5 +223,5 @@ Extends: [`EventEmitter`](https://nodejs.org/api/events.html#events_class_evente
 
 ## Contributors
 
-- [ErrorGamer2000](https://github.com/ErrorGamer2000)
+- [ErrorGamer2000](https://github.com/ErrorGamer2000)(Creator);
 - [GrahamSH-LLK](https://github.com/GrahamSH-LLK)
