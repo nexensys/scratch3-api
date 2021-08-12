@@ -223,8 +223,5 @@ Extends: [`EventEmitter`](https://nodejs.org/api/events.html#events_class_evente
 
 ## Contributors
 
-<ul>
-<li>
-<img src="https://avatars.githubusercontent.com/u/70162741?v=4" height="10" width="10" />
-</li>
-</ul>
+- [ErrorGamer2000](https://github.com/ErrorGamer2000)
+- [GrahamSH-LLK](https://github.com/GrahamSH-LLK)
