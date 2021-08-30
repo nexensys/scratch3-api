@@ -252,6 +252,39 @@ Extends: [`EventEmitter`](https://nodejs.org/api/events.html#events_class_evente
   - Get the value of a cloud variable with the given `name` (including the `☁ `).
   - `name` - The name of the variable to retrieve the value of (including the `☁ `, see `name(n)`).
   - `returns`: `String`
+  <p />
+  
+  ```js
+  let value = cloud.get("☁ variable");
+  ```
+
+- `set(name, value)`
+  - Set the cloud variable with the given `name` to the given `value`.
+  - `name` - The name of the variable to set.
+  - `value` - A number to set the cloud variable to.
+  - `returns`: `undefined`
+  <p />
+  
+  ```js
+  cloud.set("☁ variable", 1);
+  ```
+  
+- `name(n)`
+  - Add the cloud symbol to the given variable name.
+  - `n` - A `String` to add the cloud symbol to.
+  - `returns`: `☁ ${n}`
+  <p />
+  
+  ```js
+  let value = cloud.get(cloud.name("variable"));
+  ```
+  
+- `numerify(string)`
+  - Turn a string into a series of numbers for transmission over the cloud servers.
+  - `string` - The text to convert. Characters not included in `0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%()*+,-./\\:;=?@[]^_`{|}~\"'&<> ` will not be included.
+  - `returns`: `String`
+  <p />
+  
 
 ---
 
