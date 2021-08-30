@@ -300,6 +300,12 @@ Extends: [`EventEmitter`](https://nodejs.org/api/events.html#events_class_evente
   let decoded = cloud.stringify("321122311500", 0);
   ```
 
+## Projects Api
+
+### `Scratch.Projects`
+
+### `UserSession.projects`
+
 ---
 
 ## Contributors
