@@ -177,7 +177,7 @@ The `UserSession` api handles the login and verification that makes the package 
   });
   ```
 - `cloudSession(proj, [turbowarp = false])`
-	- Create a new [`CloudSession`](#cloudsession-api) for the specified project with the current `UserSession` and connects it.
+	- Create a new [`CloudSession`](#cloudsession-api) for the given project with the current `UserSession` and connects it.
 	- `proj` - The id of the project to connect to. Can be a string or number.
 	- `turbowarp` - Whether or not to connect to the [turbowarp](https://turbowarp.org) cloud servers instead of the scratch cloud servers.
 	- `returns`: `Promise.<CloudSession>`
@@ -207,17 +207,51 @@ Extends: [`EventEmitter`](https://nodejs.org/api/events.html#events_class_evente
 #### Static Methods
 
 - `create(user, proj, [turbowarp = false])`
-	- `user` - The `UserSession` to create the `CloudSession` with. If an invalid `UserSession` is provided, thing may break.
-	- `proj` - The id of the project to connect to. Can be a string or number.
-	- `turbowarp` - Whether or not to connect to the [turbowarp](https://turbowarp.org) cloud servers instead of the scratch cloud servers.
-	- `returns`: `Promise.<CloudSession>`
-	<p />
+  - Creates and loads a new `CloudSession` for the given project using the given `UserSession`.
+  - `user` - The `UserSession` to create the `CloudSession` with. If an invalid `UserSession` is provided, things may break.
+  - `proj` - The id of the project to connect to. Can be a string or number.
+  - `turbowarp` - Whether or not to connect to the [turbowarp](https://turbowarp.org) cloud servers instead of the scratch cloud servers.
+  - `returns`: `Promise.<CloudSession>`
+  <p />
 	
   ```js
   let cloud = Scratch.CloudSession.create(session, 60917032);
   ```
 - `constructor(user, proj, [turbowarp = false])`
+  - Creates a new `CloudSession` for the given project using the given `UserSession`.
+  - `user` - The `UserSession` to create the `CloudSession` with. If an invalid `UserSession` is provided, things may break.
+  - `proj` - The id of the project to connect to. Can be a string or number.
+  - `turbowarp` - Whether or not to connect to the [turbowarp](https://turbowarp.org) cloud servers instead of the scratch cloud servers.
+  - `returns`: `CloudSession`
+  <p />
+	
+  ```js
+  let cloud = new Scratch.CloudSession(session, 60917032);
+  ```
 
+#### Instance Methods
+
+- `connect()`
+  - Connects the `CloudSession` to the cloud servers.
+  - `returns`: `Promise.<undefined>`
+  <p />
+  
+  ```js
+  await cloud.connect();
+  ```
+- `end()`
+  - Ends the connection with the cloud servers.
+  - `returns`: `undefined`
+  <p />
+  
+  ```js
+  cloud.end();
+  ```
+
+- `get(name)`
+  - Get the value of a cloud variable with the given `name` (including the `☁ `).
+  - `name` - The name of the variable to retrieve the value of (including the `☁ `, see `name(n)`).
+  - `returns`: `String`
 
 ---
 
