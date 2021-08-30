@@ -281,7 +281,7 @@ Extends: [`EventEmitter`](https://nodejs.org/api/events.html#events_class_evente
   
 - `numerify(string)`
   - Turn a string into a series of numbers for transmission over the cloud servers.
-  - `string` - The text to convert. Characters not included in `0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%()*+,-./\\:;=?@[]^_`{|}~\"'&<> ` will not be included.
+  - `string` - The text to convert. Characters not included in the defined set will not be included.
   - `returns`: `String`
   <p />
   
