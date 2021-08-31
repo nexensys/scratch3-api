@@ -313,8 +313,27 @@ Extends: [`EventEmitter`](https://nodejs.org/api/events.html#events_class_evente
   - Fetch the details of the project with the given `id`.
   - `id` - A `String` or `Number` containing the project's info.
   - `returns`: `Promise.<Project>`(See the [`Project`](#project-api) api)
+  <p />
+  
+  ```js
+  let projectInfo = await Scratch.Projects.get(510186917);
+  ```
+  
+- `getUserProjects(username, limit)`
+  - Fetch all projects for the user with the specified `username`.
+  - `username` - 
 
 ### `UserSession.projects`
+
+- `get(id)`
+  - Fetch the details of the project with the given `id`.
+  - `id` - A `String` or `Number` containing the project's info.
+  - `returns`: `Promise.<Project>`(See the [`Project`](#project-api) api)
+  <p />
+  
+  ```js
+  let projectInfo = await session.projects.get(510186917);
+  ```
 
 ---
 
