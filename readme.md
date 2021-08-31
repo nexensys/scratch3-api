@@ -300,9 +300,19 @@ Extends: [`EventEmitter`](https://nodejs.org/api/events.html#events_class_evente
   let decoded = cloud.stringify("321122311500", 0);
   ```
 
+#### Events
+
+- `set`- A variable was changed on the cloud servers. Listener parameters: `(name, value)`
+- `open/reset` - The websocket connection connected or reconnected to the servers.
+
 ## Projects Api
 
 ### `Scratch.Projects`
+
+- `get(id)`
+  - Fetch the details of the project with the given `id`.
+  - `id` - A `String` or `Number` containing the project's info.
+  - `returns`: `Promise.<Project>`(See the [`Project`](#project-api) api)
 
 ### `UserSession.projects`
 
