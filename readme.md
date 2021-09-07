@@ -379,6 +379,9 @@ Extends: [`EventEmitter`](https://nodejs.org/api/events.html#events_class_evente
   let userProjects = await session.projects.getUserProjects(40);
   ```
 
+## Rest Api
+
+### Rest.conference
 ---
 
 ## Contributors

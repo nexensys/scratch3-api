@@ -1,6 +1,6 @@
 "use strict";
 
-import { getJSON } from "./request.js";
+import { getJSON, request } from "./request.js";
 
 class Conference {
   async scheduleForDay(day, zidx = true) {
@@ -106,12 +106,21 @@ class Users {
   }
 }
 
-const conference = new Conference();
-const users = new Users();
-
 const Rest = {
-  conference,
-  users
+  Conference: new Conference(),
+  Users: new Users(),
+  getHealth: function() {
+    return getJSON({
+      hostname: "api.scratch.mit.edu",
+      path: "/health"
+    });
+  },
+  getNews: function() {
+    return getJSON({
+      hostname: "api.scratch.mit.edu",
+      path: "/news"
+    });
+  }
 };
 
 export default Rest;

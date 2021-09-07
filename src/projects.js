@@ -18,25 +18,25 @@ class Project {
   constructor(d, desc) {
     Object.assign(this, desc);
     this.stage = new Sprite(
-      d.targets.filter(function (s) {
+      d.targets.filter(function(s) {
         return s.isStage;
       })[0]
     );
     this.variables = {};
     let globalVars = Object.keys(
-      d.targets.filter(function (s) {
+      d.targets.filter(function(s) {
         return s.isStage;
       })[0].variables
-    ).map(function (k) {
-      return d.targets.filter(function (s) {
+    ).map(function(k) {
+      return d.targets.filter(function(s) {
         return s.isStage;
       })[0].variables[k];
     });
     let cloudVars = globalVars
-      .filter(function (v) {
+      .filter(function(v) {
         return !!v[2];
       })
-      .map(function (v) {
+      .map(function(v) {
         return v[0];
       });
 
@@ -48,16 +48,16 @@ class Project {
         sprite: m.spriteName,
         value: m.value,
         type: m.mode === "default" ? "variable" : "list",
-        isCloud: cloudVars.includes(m.params.VARIABLE || m.params.LIST),
+        isCloud: cloudVars.includes(m.params.VARIABLE || m.params.LIST)
       };
     }
 
-    this.spritenames = d.targets.map(function (s) {
+    this.spritenames = d.targets.map(function(s) {
       return s.name;
     });
     this.sprites = [];
 
-    for (let t of d.targets.filter(function (s) {
+    for (let t of d.targets.filter(function(s) {
       return !s.isStage;
     })) {
       this.sprites.push(new Sprite(t));
@@ -120,11 +120,11 @@ class Projects {
     return new Project(
       await getJSON({
         hostname: "projects.scratch.mit.edu",
-        path: `/${id}`,
+        path: `/${id}`
       }),
       await getJSON({
         hostname: "api.scratch.mit.edu",
-        path: `/projects/${id}`,
+        path: `/projects/${id}`
       })
     );
   }
@@ -146,10 +146,10 @@ class Projects {
           typeof t === "object" ? t.username : t
         }/projects?limit=${
           typeof limit === "number" ? (limit > 40 ? 40 : limit) : 40
-        }&offset=${offset}`,
+        }&offset=${offset}`
       });
 
-      for (let project of p.map(function (i) {
+      for (let project of p.map(function(i) {
         return i.id;
       })) {
         realp.push(await this.get(project));
