@@ -331,6 +331,11 @@ Extends: [`EventEmitter`](https://nodejs.org/api/events.html#events_class_evente
   - `username` - The username of the user to retreive the projects of.
   - `limit` - a `Number` less than `40` and greater than `0`; the number of projects to retreive. Limit may be lifted soon.
   - `returns`: `Promise.<Array.<Project>>`
+  <p />
+  
+  ```js
+  let userProjects = await Scratch.Projects.getUserProjects("ErrorGamer2000", 40);
+  ```
 
 ### `UserSession.projects`
 
@@ -347,6 +352,11 @@ Extends: [`EventEmitter`](https://nodejs.org/api/events.html#events_class_evente
   - Fetch all of the user's owned projects.
   - `limit` - a `Number` less than `40` and greater than `0`; the number of projects to retreive. Limit may be lifted soon.
   - `returns`: `Promise.<Array.<Project>>`
+  <p />
+  
+  ```js
+  let userProjects = await session.projects.getUserProjects(40);
+  ```
 
 ---
 
