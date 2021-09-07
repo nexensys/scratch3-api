@@ -15,7 +15,8 @@ import { getJSON } from "./request.js";
  * @param {Object.<string, Variable>} variables - The project's variables.
  */
 class Project {
-  constructor(d) {
+  constructor(d, desc) {
+    Object.assign(this, desc);
     this.stage = new Sprite(
       d.targets.filter(function (s) {
         return s.isStage;
@@ -47,7 +48,7 @@ class Project {
         sprite: m.spriteName,
         value: m.value,
         type: m.mode === "default" ? "variable" : "list",
-        isCloud: cloudVars.includes(m.params.VARIABLE || m.params.LIST)
+        isCloud: cloudVars.includes(m.params.VARIABLE || m.params.LIST),
       };
     }
 
@@ -119,36 +120,44 @@ class Projects {
     return new Project(
       await getJSON({
         hostname: "projects.scratch.mit.edu",
-        path: `/${id}`
+        path: `/${id}`,
+      }),
+      await getJSON({
+        hostname: "api.scratch.mit.edu",
+        path: `/projects/${id}`,
       })
     );
   }
 
-  async getUserProjects(limit = 40) {
+  async getUserProjects(limit = Infinity) {
     let t = this.usersession;
     if (!t) return null;
-    if (limit > 40 || limit < 1 || Math.floor(limit) !== limit)
-      throw new Error(
-        `Error: Invalid project limit. The limit parameter must be ${
-          limit > 40
-            ? "less that 40"
-            : limit < 1
-            ? "greater that or equal to 1"
-            : "an integer"
-        }.`
-      );
-    let p = await getJSON({
-      hostname: "api.scratch.mit.edu",
-      path: `/users/${typeof t === "object" ? t.username : t}/projects?limit=${
-        typeof limit === "number" ? limit : 40
-      }`
-    });
     let realp = [];
+    for (let offset = 0; offset <= limit; offset += 40) {
+      if (limit < 1 || Math.floor(limit) !== limit)
+        throw new Error(
+          `Error: Invalid project limit. The limit parameter must be ${
+            limit < 1 ? "greater than or equal to 1" : "an integer"
+          }.`
+        );
+      let p = await getJSON({
+        hostname: "api.scratch.mit.edu",
+        path: `/users/${
+          typeof t === "object" ? t.username : t
+        }/projects?limit=${
+          typeof limit === "number" ? (limit > 40 ? 40 : limit) : 40
+        }&offset=${offset}`,
+      });
 
-    for (let project of p.map(function (i) {
-      return i.id;
-    })) {
-      realp.push(await this.get(project));
+      for (let project of p.map(function (i) {
+        return i.id;
+      })) {
+        realp.push(await this.get(project));
+      }
+
+      if (p.length < 40) {
+        break;
+      }
     }
 
     return realp;
@@ -162,7 +171,7 @@ class ProjectsStatic {
     return await new Projects().get(id);
   }
 
-  static async getUserProjects(un, limit = 40) {
+  static async getUserProjects(un, limit = Infinity) {
     return await new Projects(un).getUserProjects(limit);
   }
 }

@@ -1,5 +1,3 @@
-
-
 # scratch3-api
 
 > ### Now Supporting [Turbowarp](https://turbowarp.org)!
@@ -9,9 +7,9 @@ A remake of [trumank's scratch-api](https://www.npmjs.com/package/scratch-api) o
 ```js
 const Scratch = require("scratch-api");
 
-Scratch.UserSession.create("<username>", "<password>", function (err, user) {
-  user.cloudSession("<project>", function (err, cloud) {
-    cloud.on("set", function (name, value) {
+Scratch.UserSession.create("<username>", "<password>", function(err, user) {
+  user.cloudSession("<project>", function(err, cloud) {
+    cloud.on("set", function(name, value) {
       console.log(`${name} was set to ${value}`);
     });
   });
@@ -26,7 +24,7 @@ const Scratch = require("scratch3-api");
 async function main() {
   let session = await Scratch.UserSession.create("<username>", "<password>");
   let cloud = await session.cloudSession("<project>");
-  cloud.on("set", function (name, value) {
+  cloud.on("set", function(name, value) {
     console.log(`${name} was set to ${value}`);
   });
 }
@@ -39,9 +37,9 @@ which is a lot easier to read. If, for some reason, you _like_ callback hell, yo
 ```js
 const Scratch = require("scratch3-api");
 
-Scratch.UserSession.create("<username>", "<password>").then(function (session) {
-  session.cloudSession("<project>").then(function (cloud) {
-    cloud.on("set", function (name, value) {
+Scratch.UserSession.create("<username>", "<password>").then(function(session) {
+  session.cloudSession("<project>").then(function(cloud) {
+    cloud.on("set", function(name, value) {
       console.log(`${name} was set to ${value}`);
     });
   });
@@ -73,20 +71,20 @@ git clone https://github.com/ErrorGamer2000/scratch3-api.git
 ## Adding to your script
 
 ### CommonJS
+
 ```js
 const Scratch = require("scratch3-api");
 // or
-const { UserSession, CloudSession, Projects, Rest } = require("scratch3-api")
+const { UserSession, CloudSession, Projects, Rest } = require("scratch3-api");
 ```
 
-
 ### ESM
+
 ```js
 import Scratch from "scratch3-api";
 // or
 import { UserSession, CloudSession, Projects, Rest } from "scratch3-api";
 ```
-
 
 ## API Documentation
 
@@ -102,9 +100,11 @@ import { UserSession, CloudSession, Projects, Rest } from "scratch3-api";
 ## UserSession API
 
 The `UserSession` api handles the login and verification that makes the package to work. (Stored in the `session` variable for examples)
- 
+
 ### Methods
+
 ---
+
 #### Static Methods
 
 - `create([username], [password])`
@@ -112,55 +112,65 @@ The `UserSession` api handles the login and verification that makes the package 
   - `username` - The Scratch account username (not case sensitive). Optional. If not provided user will be prompted.
   - `password` - The Scratch account password. Optional. If not provided user will be prompted.
   - `returns`: `Promise.<UserSession>`
-   <!--- For some reason this is needed to keep code from overlapping last bullet --->
-<p />
-  
+       <!--- For some reason this is needed to keep code from overlapping last bullet --->
+    <p />
+
+
   ```js
   let session = await Scratch.UserSession.create("<username", "<password>");
-  
+
   //Could also be done with
   let session = new Scratch.UserSession();
   await session.load("<username", "<password>");
   ```
 - `constructor()`
+
   - Creates a blank, unloaded `UserSession`.
   - `returns`: `UserSession`
-  <p />
-  
+    <p />
+
   ```js
   let session = new Scratch.UserSession();
   ```
-  
+
 #### Instance Methods
 
 - `load([username], [password])`
+
   - Loads the `UserSession` instance with the given name and password.
   - `username` - The Scratch account username (not case sensitive). Optional. If not provided user will be prompted.
   - `password` - The Scratch account password. Optional. If not provided user will be prompted.
   - `returns`: `Promise.<undefined>`
-  <p />
-  
+    <p />
+
   ```js
   await session.load("<username", "<password>");
   ```
+
 - `prompt()`
+
   > ⚠ Deprecated! This feature will be removed soon. Please use `<UserSession>.load` without parameters instead.
+
   - Prompts the user for their username and password then loads the `UserSession`.
   - `returns`: `Promise.<undefined>`
-  <p />
-  
+    <p />
+
   ```js
   await session.prompt();
   ```
+
 - `verify()`
+
   - Validates the `UserSession`'s login.
   - `returns`: `Promise.<Boolean>`
-  <p />
-  
+    <p />
+
   ```js
   const valid = await session.verify();
   ```
+
 - `comment(options)`
+
   - Validates the `UserSession`'s login.
   - `options`
     - `project`, `user`, or `studio` - The project, user, or studio to comment on. User must be a username and the others must be ids.
@@ -168,23 +178,19 @@ The `UserSession` api handles the login and verification that makes the package 
     - `replyto` - The user id to address (@username ...). Optional.
     - `content` - The text of the comment to post.
   - `returns`: `Promise.<undefined>`
-  <p />
-  
+    <p />
+
   ```js
   await session.comment({
     project: 517845853,
     content: "Commented from Node.js with scratch3-api!"
   });
   ```
-- `cloudSession(proj, [turbowarp = false])`
-	- Create a new [`CloudSession`](#cloudsession-api) for the given project with the current `UserSession` and connects it.
-	- `proj` - The id of the project to connect to. Can be a string or number.
-	- `turbowarp` - Whether or not to connect to the [turbowarp](https://turbowarp.org) cloud servers instead of the scratch cloud servers.
-	- `returns`: `Promise.<CloudSession>`
-	<p />
-	
+
+- `cloudSession(proj, [turbowarp = false])` - Create a new [`CloudSession`](#cloudsession-api) for the given project with the current `UserSession` and connects it. - `proj` - The id of the project to connect to. Can be a string or number. - `turbowarp` - Whether or not to connect to the [turbowarp](https://turbowarp.org) cloud servers instead of the scratch cloud servers. - `returns`: `Promise.<CloudSession>`
+  <p />
   ```js
-	let cloud = await session.cloudSession(60917032);
+  		let cloud = await session.cloudSession(60917032);
   ```
 
 ### Instance Properties
@@ -203,7 +209,9 @@ The `UserSession` api handles the login and verification that makes the package 
 Extends: [`EventEmitter`](https://nodejs.org/api/events.html#events_class_eventemitter)
 
 ### Methods
+
 ---
+
 #### Static Methods
 
 - `create(user, proj, [turbowarp = false])`
@@ -212,8 +220,8 @@ Extends: [`EventEmitter`](https://nodejs.org/api/events.html#events_class_evente
   - `proj` - The id of the project to connect to. Can be a string or number.
   - `turbowarp` - Whether or not to connect to the [turbowarp](https://turbowarp.org) cloud servers instead of the scratch cloud servers.
   - `returns`: `Promise.<CloudSession>`
-  <p />
-	
+    <p />
+
   ```js
   let cloud = Scratch.CloudSession.create(session, 60917032);
   ```
@@ -223,8 +231,8 @@ Extends: [`EventEmitter`](https://nodejs.org/api/events.html#events_class_evente
   - `proj` - The id of the project to connect to. Can be a string or number.
   - `turbowarp` - Whether or not to connect to the [turbowarp](https://turbowarp.org) cloud servers instead of the scratch cloud servers.
   - `returns`: `CloudSession`
-  <p />
-	
+    <p />
+
   ```js
   let cloud = new Scratch.CloudSession(session, 60917032);
   ```
@@ -232,70 +240,78 @@ Extends: [`EventEmitter`](https://nodejs.org/api/events.html#events_class_evente
 #### Instance Methods
 
 - `connect()`
+
   - Connects the `CloudSession` to the cloud servers.
   - `returns`: `Promise.<undefined>`
-  <p />
-  
+    <p />
+
   ```js
   await cloud.connect();
   ```
+
 - `end()`
+
   - Ends the connection with the cloud servers.
   - `returns`: `undefined`
-  <p />
-  
+    <p />
+
   ```js
   cloud.end();
   ```
 
 - `get(name)`
-  - Get the value of a cloud variable with the given `name` (including the `☁ `).
-  - `name` - The name of the variable to retrieve the value of (including the `☁ `, see `name(n)`).
+
+  - Get the value of a cloud variable with the given `name` (including the `☁`).
+  - `name` - The name of the variable to retrieve the value of (including the `☁`, see `name(n)`).
   - `returns`: `String`
-  <p />
-  
+    <p />
+
   ```js
   let value = cloud.get("☁ variable");
   ```
 
 - `set(name, value)`
+
   - Set the cloud variable with the given `name` to the given `value`.
   - `name` - The name of the variable to set.
   - `value` - A number to set the cloud variable to.
   - `returns`: `undefined`
-  <p />
-  
+    <p />
+
   ```js
   cloud.set("☁ variable", 1);
   ```
-  
+
 - `name(n)`
+
   - Add the cloud symbol to the given variable name.
   - `n` - A `String` to add the cloud symbol to.
   - `returns`: `☁ ${n}`
-  <p />
-  
+    <p />
+
   ```js
   let value = cloud.get(cloud.name("variable"));
   ```
-  
+
 - `numerify(string)`
+
   - Turn a string into a series of numbers for transmission over the cloud servers.
   - `string` - The text to convert. Characters not included in the defined set will not be included.
   - `returns`: `String`
-  <p />
-  
+    <p />
+
   ```js
   cloud.set(cloud.name("variable"), cloud.numerify("value"));
   ```
 
 - `stringify(number, [startLetter = 1])`
+
   - Decode a string from a number generated by the `numerify` function.
   - `number` - A string or number containing the value to decode.
   - `startLetter` - The letter of the input `number` to start the deconing from.
   - `returns`: `String`
-  <p />
-  
+    <p />
+
   ```js
   let decoded = cloud.stringify("321122311500", 0);
   ```
@@ -317,22 +333,24 @@ Extends: [`EventEmitter`](https://nodejs.org/api/events.html#events_class_evente
 ### `Scratch.Projects`
 
 - `get(id)`
+
   - Fetch the details of the project with the given `id`.
   - `id` - A `String` or `Number` containing the project's info.
   - `returns`: `Promise.<Project>`(See the [`Project`](#project-api) api)
-  <p />
-  
+    <p />
+
   ```js
   let projectInfo = await Scratch.Projects.get(510186917);
   ```
-  
-- `getUserProjects(username, [limit = 40])`
+
+- `getUserProjects(username, [limit = Infinity])`
+
   - Fetch all projects for the user with the specified `username`.
   - `username` - The username of the user to retreive the projects of.
-  - `limit` - a `Number` less than `40` and greater than `0`; the number of projects to retreive. Limit may be lifted soon.
+  - `limit` - a `Number` greater than `0`; the number of projects to retreive.
   - `returns`: `Promise.<Array.<Project>>`
-  <p />
-  
+    <p />
+
   ```js
   let userProjects = await Scratch.Projects.getUserProjects("ErrorGamer2000", 40);
   ```
@@ -340,20 +358,23 @@ Extends: [`EventEmitter`](https://nodejs.org/api/events.html#events_class_evente
 ### `UserSession.projects`
 
 - `get(id)`
+
   - Fetch the details of the project with the given `id`.
   - `id` - A `String` or `Number` containing the project's info.
   - `returns`: `Promise.<Project>`(See the [`Project`](#project-api) api)
-  <p />
-  
+    <p />
+
   ```js
   let projectInfo = await session.projects.get(510186917);
   ```
-- `getUserProjects([limit = 40])`
+
+- `getUserProjects([limit = Infinity])`
+
   - Fetch all of the user's owned projects.
-  - `limit` - a `Number` less than `40` and greater than `0`; the number of projects to retreive. Limit may be lifted soon.
+  - `limit` - a `Number` greater than `0`; the number of projects to retreive.
   - `returns`: `Promise.<Array.<Project>>`
-  <p />
-  
+    <p />
+
   ```js
   let userProjects = await session.projects.getUserProjects(40);
   ```

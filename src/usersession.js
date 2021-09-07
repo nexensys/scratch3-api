@@ -6,7 +6,7 @@ import CloudSession from "./cloudsession.js";
 import Projects from "./projects.js";
 import { request } from "./request.js";
 
-const parse = function (cookie) {
+const parse = function(cookie) {
   let c = {};
   let e = cookie.split(";");
 
@@ -71,7 +71,7 @@ class UserSession {
     if (!username) {
       prompt.start();
 
-      let r = await new Promise(function (resolve, reject) {
+      let r = await new Promise(function(resolve, reject) {
         prompt.get(
           [
             {
@@ -79,7 +79,7 @@ class UserSession {
               required: true
             }
           ],
-          function (e, r) {
+          function(e, r) {
             if (e) reject(e);
             else resolve(r);
           }
@@ -93,7 +93,7 @@ class UserSession {
     if (!password) {
       prompt.start();
 
-      let r = await new Promise(function (resolve, reject) {
+      let r = await new Promise(function(resolve, reject) {
         prompt.get(
           [
             {
@@ -103,7 +103,7 @@ class UserSession {
               replace: "•"
             }
           ],
-          function (e, r) {
+          function(e, r) {
             if (e) reject(e);
             else resolve(r);
           }
@@ -146,7 +146,7 @@ class UserSession {
    * @async
    */
   async prompt() {
-    await new Promise(function (resolve) {
+    await new Promise(function(resolve) {
       return setTimeout(resolve, 0);
     }); //Allow deprecation warning to show before prompt
 
@@ -198,7 +198,9 @@ class UserSession {
         referer: `https://scratch.mit.edu/users/${this.username}`,
         "X-Requested-With": "XMLHttpRequest",
         "x-csrftoken": "a",
-        Cookie: `scratchcsrftoken=a;scratchlanguage=en;scratchsessionsid=${this.sessionId};`
+        Cookie: `scratchcsrftoken=a;scratchlanguage=en;scratchsessionsid=${
+          this.sessionId
+        };`
       },
       path: "/site-api/comments/" + t + "/" + id + "/add/",
       method: "POST",

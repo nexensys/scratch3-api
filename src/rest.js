@@ -12,11 +12,11 @@ class Conference {
       "Wednesday",
       "Thursday",
       "Friday"
-    ].map(function (day) {
+    ].map(function(day) {
       return day.toLowerCase();
     });
 
-    let d = (function () {
+    let d = (function() {
       switch (typeof day) {
         case "string":
           if (days.includes(day)) {
