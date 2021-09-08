@@ -381,7 +381,22 @@ Extends: [`EventEmitter`](https://nodejs.org/api/events.html#events_class_evente
 
 ## Rest Api
 
-### Rest.conference
+### Rest.Conference
+- `scheduleForDay(day, [zeroIndex = true])`
+  - Fetch the day's schedule from the Scratch Rest api.
+  - `day` - A `Number` or `String` containing the day of the week to retreive the schedule for.
+  - `zeroIndex` - A `Boolean` determining whether or not day `1` should me Monday(`true`) or Tuesday (`false`);
+  - `returns`: `Promise.<Object>`
+  <p />
+
+  ```js
+  let schedule = await Scratch.Rest.scheduleForDay("Monday");
+  ```
+
+- `detailsFor(id)`
+  - Fetch the details for the conference with the given `id`.
+  - `id` - A `Number` containing the `id` of a Scratch conference.
+  - `returns`: `Promise.<Object>`
 ---
 
 ## Contributors

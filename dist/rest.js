@@ -105,11 +105,21 @@ class Users {
 
 }
 
-const conference = new Conference();
-const users = new Users();
 const Rest = {
-  conference,
-  users
+  Conference: new Conference(),
+  Users: new Users(),
+  getHealth: function () {
+    return (0, _request.getJSON)({
+      hostname: "api.scratch.mit.edu",
+      path: "/health"
+    });
+  },
+  getNews: function () {
+    return (0, _request.getJSON)({
+      hostname: "api.scratch.mit.edu",
+      path: "/news"
+    });
+  }
 };
 var _default = Rest;
 exports.default = _default;
