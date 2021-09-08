@@ -381,7 +381,7 @@ Extends: [`EventEmitter`](https://nodejs.org/api/events.html#events_class_evente
 
 ## Rest Api
 
-### Rest.Conference
+### `Rest.Conference`
 - `scheduleForDay(day, [zeroIndex = true])`
   - Fetch the day's schedule from the Scratch Rest api.
   - `day` - A `Number` or `String` containing the day of the week to retreive the schedule for.
@@ -397,6 +397,66 @@ Extends: [`EventEmitter`](https://nodejs.org/api/events.html#events_class_evente
   - Fetch the details for the conference with the given `id`.
   - `id` - A `Number` containing the `id` of a Scratch conference.
   - `returns`: `Promise.<Object>`
+  <p />
+
+  ```js
+  let details = await Scratch.Rest.Conference.detailsFor(id);
+  ```
+
+### `Rest.Users`
+- `get(username)`
+  - Fetch the details of the user with the given `username`.
+  - `username` - A `String` containing the username of the user to retreive the details of.
+  - `returns`: `Promise.<Object>`
+  <p />
+
+  ```js
+  let user = Scratch.Rest.Users.get("ErrorGamer2000");
+  ```
+
+- `getFollowing(username)`
+  - Fetch the list of users that the user with the given `username` is following.
+  - `username` - A `String` containing the `username` of the user to fetch the following list of.
+  `returns`: `Promise.<Array.<Object>>`
+  <p />
+
+  ```js
+  let following = await Scratch.Rest.Users.getFollowing("ErrorGamer2000");
+  ```
+
+- `getFollowers(username)`
+  - Fetch the list of users that follow the user with the given `username`.
+  - `username` - A `String` containing the `username` of the user to fetch the follower list of.
+  `returns`: `Promise.<Array.<Object>>`
+  <p />
+
+  ```js
+  let followers = await Scratch.Rest.Users.getFollowers("ErrorGamer2000");
+  ```
+
+### Other `Rest` Methods
+- `getHealth()`
+  - Retreive the Scratch server's status.
+  - `returns`: `Promise.<Object>`
+  <p />
+
+  ```js
+  let status = await Scratch.Rest.getHealth();
+  ```
+
+- `getNews()`
+  - Retreive the Scratch news.
+  - `returns`: `Promise.<Array.<Object>>`
+  <p />
+
+  ```js
+  let news = await Scratch.Rest.getNews();
+  ```
+
+## Other APIs
+
+Documentation in progress...
+
 ---
 
 ## Contributors
