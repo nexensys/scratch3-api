@@ -7,9 +7,9 @@ A remake of [trumank's scratch-api](https://www.npmjs.com/package/scratch-api) o
 ```js
 const Scratch = require("scratch-api");
 
-Scratch.UserSession.create("<username>", "<password>", function(err, user) {
-  user.cloudSession("<project>", function(err, cloud) {
-    cloud.on("set", function(name, value) {
+Scratch.UserSession.create("<username>", "<password>", function (err, user) {
+  user.cloudSession("<project>", function (err, cloud) {
+    cloud.on("set", function (name, value) {
       console.log(`${name} was set to ${value}`);
     });
   });
@@ -24,7 +24,7 @@ const Scratch = require("scratch3-api");
 async function main() {
   let session = await Scratch.UserSession.create("<username>", "<password>");
   let cloud = await session.cloudSession("<project>");
-  cloud.on("set", function(name, value) {
+  cloud.on("set", function (name, value) {
     console.log(`${name} was set to ${value}`);
   });
 }
@@ -37,9 +37,9 @@ which is a lot easier to read. If, for some reason, you _like_ callback hell, yo
 ```js
 const Scratch = require("scratch3-api");
 
-Scratch.UserSession.create("<username>", "<password>").then(function(session) {
-  session.cloudSession("<project>").then(function(cloud) {
-    cloud.on("set", function(name, value) {
+Scratch.UserSession.create("<username>", "<password>").then(function (session) {
+  session.cloudSession("<project>").then(function (cloud) {
+    cloud.on("set", function (name, value) {
       console.log(`${name} was set to ${value}`);
     });
   });
@@ -108,13 +108,13 @@ The `UserSession` api handles the login and verification that makes the package 
 #### Static Methods
 
 - `create([username], [password])`
+
   - Creates and loads a new UserSession with the given username and password.
   - `username` - The Scratch account username (not case sensitive). Optional. If not provided user will be prompted.
   - `password` - The Scratch account password. Optional. If not provided user will be prompted.
   - `returns`: `Promise.<UserSession>`
        <!--- For some reason this is needed to keep code from overlapping last bullet --->
     <p />
-
 
   ```js
   let session = await Scratch.UserSession.create("<username", "<password>");
@@ -123,6 +123,7 @@ The `UserSession` api handles the login and verification that makes the package 
   let session = new Scratch.UserSession();
   await session.load("<username", "<password>");
   ```
+
 - `constructor()`
 
   - Creates a blank, unloaded `UserSession`.
@@ -215,6 +216,7 @@ Extends: [`EventEmitter`](https://nodejs.org/api/events.html#events_class_evente
 #### Static Methods
 
 - `create(user, proj, [turbowarp = false])`
+
   - Creates and loads a new `CloudSession` for the given project using the given `UserSession`.
   - `user` - The `UserSession` to create the `CloudSession` with. If an invalid `UserSession` is provided, things may break.
   - `proj` - The id of the project to connect to. Can be a string or number.
@@ -225,7 +227,9 @@ Extends: [`EventEmitter`](https://nodejs.org/api/events.html#events_class_evente
   ```js
   let cloud = Scratch.CloudSession.create(session, 60917032);
   ```
+
 - `constructor(user, proj, [turbowarp = false])`
+
   - Creates a new `CloudSession` for the given project using the given `UserSession`.
   - `user` - The `UserSession` to create the `CloudSession` with. If an invalid `UserSession` is provided, things may break.
   - `proj` - The id of the project to connect to. Can be a string or number.
@@ -327,6 +331,7 @@ Extends: [`EventEmitter`](https://nodejs.org/api/events.html#events_class_evente
 
 - `set`- A variable was changed on the cloud servers. Listener parameters: `(name, value)`
 - `open/reset` - The websocket connection connected or reconnected to the servers.
+- `addvariable` - A variable was set for the first time. Note that this will not fire the `set` event as well, so you may need to add extra listeners.
 
 ## Projects Api
 
@@ -352,7 +357,10 @@ Extends: [`EventEmitter`](https://nodejs.org/api/events.html#events_class_evente
     <p />
 
   ```js
-  let userProjects = await Scratch.Projects.getUserProjects("ErrorGamer2000", 40);
+  let userProjects = await Scratch.Projects.getUserProjects(
+    "ErrorGamer2000",
+    40
+  );
   ```
 
 ### `UserSession.projects`
@@ -382,7 +390,9 @@ Extends: [`EventEmitter`](https://nodejs.org/api/events.html#events_class_evente
 ## Rest Api
 
 ### `Rest.Conference`
+
 - `scheduleForDay(day, [zeroIndex = true])`
+
   - Fetch the day's schedule from the Scratch Rest api.
   - `day` - A `Number` or `String` containing the day of the week to retreive the schedule for.
   - `zeroIndex` - A `Boolean` determining whether or not day `1` should me Monday(`true`) or Tuesday (`false`);
@@ -394,6 +404,7 @@ Extends: [`EventEmitter`](https://nodejs.org/api/events.html#events_class_evente
   ```
 
 - `detailsFor(id)`
+
   - Fetch the details for the conference with the given `id`.
   - `id` - A `Number` containing the `id` of a Scratch conference.
   - `returns`: `Promise.<Object>`
@@ -404,7 +415,9 @@ Extends: [`EventEmitter`](https://nodejs.org/api/events.html#events_class_evente
   ```
 
 ### `Rest.Users`
+
 - `get(username)`
+
   - Fetch the details of the user with the given `username`.
   - `username` - A `String` containing the username of the user to retreive the details of.
   - `returns`: `Promise.<Object>`
@@ -415,6 +428,7 @@ Extends: [`EventEmitter`](https://nodejs.org/api/events.html#events_class_evente
   ```
 
 - `getFollowing(username)`
+
   - Fetch the list of users that the user with the given `username` is following.
   - `username` - A `String` containing the `username` of the user to fetch the following list of.
   `returns`: `Promise.<Array.<Object>>`
@@ -425,6 +439,7 @@ Extends: [`EventEmitter`](https://nodejs.org/api/events.html#events_class_evente
   ```
 
 - `getFollowers(username)`
+
   - Fetch the list of users that follow the user with the given `username`.
   - `username` - A `String` containing the `username` of the user to fetch the follower list of.
   `returns`: `Promise.<Array.<Object>>`
@@ -435,7 +450,9 @@ Extends: [`EventEmitter`](https://nodejs.org/api/events.html#events_class_evente
   ```
 
 ### Other `Rest` Methods
+
 - `getHealth()`
+
   - Retreive the Scratch server's status.
   - `returns`: `Promise.<Object>`
   <p />
@@ -445,6 +462,7 @@ Extends: [`EventEmitter`](https://nodejs.org/api/events.html#events_class_evente
   ```
 
 - `getNews()`
+
   - Retreive the Scratch news.
   - `returns`: `Promise.<Array.<Object>>`
   <p />

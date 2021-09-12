@@ -49,7 +49,8 @@ class CloudSession extends EventEmitter {
         }
 
         if (t.method === "set") {
-          if (!this.variables.hasOwnProperty(t.name)) {
+          let isNew = !this.variables.hasOwnProperty(t.name);
+          if (isNew) {
             privateProps.addVariable.get(this)(t.name, t.value);
           }
 
@@ -61,7 +62,7 @@ class CloudSession extends EventEmitter {
            * @property {string} value - The value of the variable.
            */
 
-          this.emit("set", t.name, t.value);
+          this.emit(isNew ? "addvariable" : "set", t.name, t.value);
         } else {
           console.warn(`Unimplemented packet: ${t}`);
         }
@@ -114,10 +115,10 @@ class CloudSession extends EventEmitter {
         let self = this;
         privateProps.variables.get(this)[n] = v;
         Object.defineProperty(this.variables, n, {
-          get: function() {
+          get: function () {
             return self.get(n);
           },
-          set: function(val) {
+          set: function (val) {
             return self.set(n, val);
           }
         });
@@ -164,7 +165,7 @@ class CloudSession extends EventEmitter {
     let self = this;
     let handshake = privateProps.sendHandshake.get(this);
     let sendPacket = privateProps.sendPacket.get(this);
-    privateProps.connection.get(this).on("open", function() {
+    privateProps.connection.get(this).on("open", function () {
       handshake();
 
       for (let packet of self.attemptedPackets) {
@@ -179,14 +180,14 @@ class CloudSession extends EventEmitter {
 
       self.emit("reset");
     });
-    privateProps.connection.get(this).on("close", function() {
+    privateProps.connection.get(this).on("close", function () {
       self.connect();
     });
     let s = "";
 
     let handlePacket = privateProps.handlePacket.get(this);
     if (!this.usetw) {
-      privateProps.connection.get(this).on("message", function(c) {
+      privateProps.connection.get(this).on("message", function (c) {
         s += c;
         let p = s.split("\n");
         s = p.pop();
@@ -205,7 +206,7 @@ class CloudSession extends EventEmitter {
         }
       });
     } else {
-      privateProps.connection.get(this).on("message", function(p) {
+      privateProps.connection.get(this).on("message", function (p) {
         for (let m of p.split("\n")) {
           let t;
 
@@ -223,8 +224,8 @@ class CloudSession extends EventEmitter {
 
     let connection = privateProps.connection.get(this);
 
-    await new Promise(function(resolve) {
-      connection.on("open", function() {
+    await new Promise(function (resolve) {
+      connection.on("open", function () {
         self.emit("open");
         resolve();
       });

@@ -1,6 +1,6 @@
 {
   "name": "scratch3-api",
-  "version": "3.6.0",
+  "version": "3.6.1",
   "description": "A remake of trumank's scratch-api optimized for scratch 3.0.",
   "main": "./dist/api.js",
   "exports": {

@@ -59,7 +59,9 @@ class CloudSession extends _events.default {
       }
 
       if (t.method === "set") {
-        if (!this.variables.hasOwnProperty(t.name)) {
+        let isNew = !this.variables.hasOwnProperty(t.name);
+
+        if (isNew) {
           privateProps.addVariable.get(this)(t.name, t.value);
         }
 
@@ -71,7 +73,7 @@ class CloudSession extends _events.default {
          * @property {string} value - The value of the variable.
          */
 
-        this.emit("set", t.name, t.value);
+        this.emit(isNew ? "addvariable" : "set", t.name, t.value);
       } else {
         console.warn(`Unimplemented packet: ${t}`);
       }
