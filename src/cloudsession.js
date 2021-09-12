@@ -52,6 +52,7 @@ class CloudSession extends EventEmitter {
           let isNew = !this.variables.hasOwnProperty(t.name);
           if (isNew) {
             privateProps.addVariable.get(this)(t.name, t.value);
+            this.emit("addvariable", t.name, t.value);
           }
 
           privateProps.variables.get(this)[t.name] = t.value;
@@ -62,7 +63,7 @@ class CloudSession extends EventEmitter {
            * @property {string} value - The value of the variable.
            */
 
-          this.emit(isNew ? "addvariable" : "set", t.name, t.value);
+          this.emit("set", t.name, t.value);
         } else {
           console.warn(`Unimplemented packet: ${t}`);
         }

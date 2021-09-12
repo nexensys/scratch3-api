@@ -331,7 +331,7 @@ Extends: [`EventEmitter`](https://nodejs.org/api/events.html#events_class_evente
 
 - `set`- A variable was changed on the cloud servers. Listener parameters: `(name, value)`
 - `open/reset` - The websocket connection connected or reconnected to the servers.
-- `addvariable` - A variable was set for the first time. Note that this will not fire the `set` event as well, so you may need to add extra listeners.
+- `addvariable` - A variable was set for the first time.
 
 ## Projects Api
 
