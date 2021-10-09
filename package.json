@@ -8,7 +8,9 @@
     "import": "./src/api.js"
   },
   "scripts": {
-    "babel": "npx babel src --out-dir dist"
+    "ts": "tsc",
+    "babel": "npx babel dist --out-dir dist",
+    "build": "npm run ts && npm run babel"
   },
   "author": "ErrorGamer2000",
   "license": "MIT",
@@ -19,7 +21,8 @@
   "devDependencies": {
     "@babel/cli": "^7.14.8",
     "@babel/core": "^7.14.8",
-    "@babel/preset-env": "^7.14.8"
+    "@babel/preset-env": "^7.14.8",
+    "typescript": "^4.4.3"
   },
   "repository": {
     "type": "git",

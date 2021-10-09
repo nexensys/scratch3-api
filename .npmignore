@@ -5,3 +5,4 @@ babel.config.json
 package-lock.json
 test.js
 node_modules/
+src/
