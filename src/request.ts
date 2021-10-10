@@ -1,9 +1,10 @@
 "use strict";
 
 import https from "https";
+import { AnyObject, RequestResponse } from "./defs";
 
-const request = async function(o) {
-  let h = {
+const request = async function (o: AnyObject): Promise<RequestResponse> {
+  let h: AnyObject = {
     Cookie: "scratchcsrftoken=a; scratchlanguage=en;",
     "X-CSRFToken": "a",
     referer: "https://scratch.mit.edu"
@@ -23,7 +24,7 @@ const request = async function(o) {
     }
   }
 
-  let p = new Promise(function(resolve) {
+  let p = new Promise<RequestResponse>(function (resolve) {
     let r = https.request(
       {
         hostname: o.hostname || "scratch.mit.edu",
@@ -32,12 +33,12 @@ const request = async function(o) {
         method: o.method || "GET",
         headers: h
       },
-      function(res) {
-        let p = [];
-        res.on("data", function(c) {
+      function (res) {
+        let p: any[] = [];
+        res.on("data", function (c) {
           return p.push(c);
         });
-        res.on("end", function() {
+        res.on("end", function () {
           return resolve([null, Buffer.concat(p).toString(), res]);
         });
       }
@@ -54,8 +55,8 @@ const request = async function(o) {
   return await p;
 };
 
-const getJSON = async function(o) {
-  let [e, b, r] = await request(o);
+const getJSON = async function (o: AnyObject): Promise<AnyObject | any[]> {
+  let [, b] = await request(o);
   return JSON.parse(b);
 };
 

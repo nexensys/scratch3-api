@@ -1,27 +1,26 @@
 {
   "name": "scratch3-api",
-  "version": "3.6.2",
+  "version": "4.0.1",
   "description": "A remake of trumank's scratch-api optimized for scratch 3.0.",
   "main": "./dist/api.js",
-  "exports": {
-    "require": "./dist/api.js",
-    "import": "./src/api.js"
-  },
+  "typings": "dist/api.d.ts",
   "scripts": {
-    "ts": "tsc",
-    "babel": "npx babel dist --out-dir dist",
-    "build": "npm run ts && npm run babel"
+    "ts": "npx tsc"
   },
-  "author": "ErrorGamer2000",
+  "author": {
+    "name": "ErrorGamer2000",
+    "email": "error2000gamer@gmail.com",
+    "url": "https://errorgamer2000.github.io/"
+  },
   "license": "MIT",
   "dependencies": {
+    "@types/node": "^16.10.3",
     "prompt": "^1.1.0",
     "ws": "^7.4.5"
   },
   "devDependencies": {
-    "@babel/cli": "^7.14.8",
-    "@babel/core": "^7.14.8",
-    "@babel/preset-env": "^7.14.8",
+    "@types/prompt": "^1.1.1",
+    "@types/ws": "^8.2.0",
     "typescript": "^4.4.3"
   },
   "repository": {

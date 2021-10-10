@@ -1,6 +1,8 @@
 "use strict";
 
+import { AnyObject } from "./defs.js";
 import { getJSON } from "./request.js";
+import UserSession from "./usersession.js";
 
 /**
  * Project variable.
@@ -15,28 +17,33 @@ import { getJSON } from "./request.js";
  * @param {Object.<string, Variable>} variables - The project's variables.
  */
 class Project {
-  constructor(d, desc) {
+  stage: Sprite;
+  variables: AnyObject;
+  spritenames: string[];
+  sprites: Sprite[];
+
+  constructor(d: AnyObject, desc: AnyObject) {
     Object.assign(this, desc);
     this.stage = new Sprite(
-      d.targets.filter(function(s) {
+      d.targets.filter(function (s: AnyObject) {
         return s.isStage;
       })[0]
     );
     this.variables = {};
     let globalVars = Object.keys(
-      d.targets.filter(function(s) {
+      d.targets.filter(function (s: AnyObject) {
         return s.isStage;
       })[0].variables
-    ).map(function(k) {
-      return d.targets.filter(function(s) {
+    ).map(function (k) {
+      return d.targets.filter(function (s: AnyObject) {
         return s.isStage;
       })[0].variables[k];
     });
     let cloudVars = globalVars
-      .filter(function(v) {
+      .filter(function (v) {
         return !!v[2];
       })
-      .map(function(v) {
+      .map(function (v) {
         return v[0];
       });
 
@@ -52,12 +59,12 @@ class Project {
       };
     }
 
-    this.spritenames = d.targets.map(function(s) {
+    this.spritenames = d.targets.map(function (s: AnyObject) {
       return s.name;
     });
     this.sprites = [];
 
-    for (let t of d.targets.filter(function(s) {
+    for (let t of d.targets.filter(function (s: AnyObject) {
       return !s.isStage;
     })) {
       this.sprites.push(new Sprite(t));
@@ -66,7 +73,19 @@ class Project {
 }
 
 class Sprite {
-  constructor(d) {
+  variables: AnyObject;
+  lists: AnyObject;
+  broadcasts: string[];
+  blocks: AnyObject[];
+  comments: AnyObject[];
+  isStage: boolean;
+  name: string;
+  costumes: AnyObject[];
+  sounds: AnyObject[];
+  volume: number;
+  layer: number;
+
+  constructor(d: AnyObject) {
     this.variables = {};
     if (!d.variables) d.variables = {};
 
@@ -112,11 +131,12 @@ class Sprite {
 }
 
 class Projects {
-  constructor(u) {
+  usersession: UserSession | string | undefined;
+  constructor(u?: UserSession | string) {
     this.usersession = u;
   }
 
-  async get(id) {
+  async get(id: number | string) {
     return new Project(
       await getJSON({
         hostname: "projects.scratch.mit.edu",
@@ -129,7 +149,7 @@ class Projects {
     );
   }
 
-  async getUserProjects(limit = Infinity) {
+  async getUserProjects(limit: number = Infinity) {
     let t = this.usersession;
     if (!t) return null;
     let realp = [];
@@ -149,7 +169,7 @@ class Projects {
         }&offset=${offset}`
       });
 
-      for (let project of p.map(function(i) {
+      for (let project of p.map(function (i: AnyObject) {
         return i.id;
       })) {
         realp.push(await this.get(project));
@@ -167,11 +187,11 @@ class Projects {
 export default Projects;
 
 class ProjectsStatic {
-  static async get(id) {
+  static async get(id: number) {
     return await new Projects().get(id);
   }
 
-  static async getUserProjects(un, limit = Infinity) {
+  static async getUserProjects(un: string, limit: number = Infinity) {
     return await new Projects(un).getUserProjects(limit);
   }
 }

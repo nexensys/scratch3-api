@@ -5,9 +5,10 @@ import util from "util";
 import CloudSession from "./cloudsession.js";
 import Projects from "./projects.js";
 import { request } from "./request.js";
+import { AnyObject } from "./defs.js";
 
-const parse = function(cookie) {
-  let c = {};
+const parse = function (cookie: string): AnyObject {
+  let c: AnyObject = {};
   let e = cookie.split(";");
 
   for (let p of e) {
@@ -28,6 +29,13 @@ const parse = function(cookie) {
  */
 
 class UserSession {
+  loaded: boolean;
+  valid: boolean;
+  sessionId: string = "";
+  username: string = "";
+  password: string = "";
+  id: number = 0;
+  token: string = "";
   /**
    * Create a blank UserSession
    */
@@ -43,9 +51,9 @@ class UserSession {
    * @param  {string} [password] - The password to log in with. If missing user will be prompted.
    * @returns {UserSession} - A loaded UserSession.
    */
-  static async create(...a) {
+  static async create(username: string, password: string) {
     let s = new this();
-    await s.load(...a);
+    await s.load(username, password);
     return s;
   }
   /**
@@ -63,7 +71,7 @@ class UserSession {
    * @param  {string} [username] - The username to log in with. If missing user will be prompted.
    * @param  {string} [password] - The password to log in with. If missing user will be prompted.
    */
-  async load(username, password) {
+  async load(username: string = "", password: string = "") {
     if (this.loaded) return;
     let un = username,
       pw = password;
@@ -71,7 +79,7 @@ class UserSession {
     if (!username) {
       prompt.start();
 
-      let r = await new Promise(function(resolve, reject) {
+      let r = await new Promise<AnyObject>(function (resolve, reject) {
         prompt.get(
           [
             {
@@ -79,7 +87,7 @@ class UserSession {
               required: true
             }
           ],
-          function(e, r) {
+          function (e, r) {
             if (e) reject(e);
             else resolve(r);
           }
@@ -93,17 +101,15 @@ class UserSession {
     if (!password) {
       prompt.start();
 
-      let r = await new Promise(function(resolve, reject) {
+      let r = await new Promise<AnyObject>(function (resolve, reject) {
         prompt.get(
           [
             {
               name: "Password",
-              required: true,
-              hidden: true,
-              replace: "•"
+              required: true
             }
           ],
-          function(e, r) {
+          function (e, r) {
             if (e) reject(e);
             else resolve(r);
           }
@@ -134,7 +140,7 @@ class UserSession {
       this.loaded = true;
       this.token = u.token;
       return;
-    } catch (e) {
+    } catch (e: any) {
       if (e instanceof SyntaxError)
         throw new Error("Scratch servers are down. Try again later.");
       throw new Error(e);
@@ -146,7 +152,7 @@ class UserSession {
    * @async
    */
   async prompt() {
-    await new Promise(function(resolve) {
+    await new Promise(function (resolve) {
       return setTimeout(resolve, 0);
     }); //Allow deprecation warning to show before prompt
 
@@ -174,7 +180,7 @@ class UserSession {
    * @param {string} [o.replyto] - The user id to address (@username ...).
    * @param {string} [o.content=""] - The text of the comment to post.
    */
-  async comment(o) {
+  async comment(o: AnyObject) {
     if (!this.valid) {
       await this.verify();
     }
@@ -198,9 +204,7 @@ class UserSession {
         referer: `https://scratch.mit.edu/users/${this.username}`,
         "X-Requested-With": "XMLHttpRequest",
         "x-csrftoken": "a",
-        Cookie: `scratchcsrftoken=a;scratchlanguage=en;scratchsessionsid=${
-          this.sessionId
-        };`
+        Cookie: `scratchcsrftoken=a;scratchlanguage=en;scratchsessionsid=${this.sessionId};`
       },
       path: "/site-api/comments/" + t + "/" + id + "/add/",
       method: "POST",
@@ -218,7 +222,7 @@ class UserSession {
    * @param {string|number} proj - ID of the project to connect to.
    * @returns {CloudSession} A loaded CloudSession.
    */
-  async cloudSession(proj, turbowarp) {
+  async cloudSession(proj: number | string, turbowarp: boolean = false) {
     return await CloudSession.create(this, proj, turbowarp);
   }
 }

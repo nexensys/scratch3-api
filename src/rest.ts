@@ -1,9 +1,10 @@
 "use strict";
 
-import { getJSON, request } from "./request.js";
+import { AnyObject } from "./defs.js";
+import { getJSON } from "./request.js";
 
 class Conference {
-  async scheduleForDay(day, zidx = true) {
+  async scheduleForDay(day: string | number, zidx: boolean = true) {
     let days = [
       "Saturday",
       "Sunday",
@@ -12,11 +13,11 @@ class Conference {
       "Wednesday",
       "Thursday",
       "Friday"
-    ].map(function(day) {
+    ].map(function (day) {
       return day.toLowerCase();
     });
 
-    let d = (function() {
+    let d = (function () {
       switch (typeof day) {
         case "string":
           if (days.includes(day)) {
@@ -51,7 +52,7 @@ class Conference {
     });
   }
 
-  async detailsFor(id) {
+  async detailsFor(id: number | string) {
     return await getJSON({
       hostname: "api.scratch.mit.edu",
       path: `/conference/${id}/details`
@@ -60,15 +61,15 @@ class Conference {
 }
 
 class Users {
-  async get(username) {
+  async get(username: string) {
     return await getJSON({
       hostname: "api.scratch.mit.edu",
       path: `/users/${username}`
     });
   }
 
-  async getFollowing(username) {
-    let following = [];
+  async getFollowing(username: string) {
+    let following: AnyObject[] = [];
     let offset = 0;
 
     while (true) {
@@ -76,7 +77,7 @@ class Users {
         hostname: "api.scratch.mit.edu",
         path: `/users/${username}/following?limit=40&offset=${offset}`
       });
-      following = following.concat(batch);
+      following = following.concat(Array.isArray(batch) ? batch : []);
 
       if (batch.length < 40) {
         return following;
@@ -86,8 +87,8 @@ class Users {
     }
   }
 
-  async getFollowers(username) {
-    let followers = [];
+  async getFollowers(username: string) {
+    let followers: AnyObject[] = [];
     let offset = 0;
 
     while (true) {
@@ -109,13 +110,13 @@ class Users {
 const Rest = {
   Conference: new Conference(),
   Users: new Users(),
-  getHealth: function() {
+  getHealth: function () {
     return getJSON({
       hostname: "api.scratch.mit.edu",
       path: "/health"
     });
   },
-  getNews: function() {
+  getNews: function () {
     return getJSON({
       hostname: "api.scratch.mit.edu",
       path: "/news"
