@@ -243,7 +243,7 @@ class CloudSession extends EventEmitter {
    * @param {string} n - The name of the variable.
    * @param {number|string} v - The value to set the variable to.
    */
-  set(n: string, v: number) {
+  set(n: string, v: number | string) {
     if (isNaN(Number(v)))
       console.warn("Only number values can be stored in cloud variables.");
     this._variables[n] = v;
