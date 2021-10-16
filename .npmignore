@@ -2,6 +2,6 @@
 .gitignore
 .github/
 package-lock.json
-test.js
+test.cjs
 node_modules/
-src/
+tsconfig.json
