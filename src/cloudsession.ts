@@ -265,7 +265,7 @@ class CloudSession extends EventEmitter {
    * @param {string} [s=""] - The string to convert.
    * @returns {string} A sequence of numbers representing the input string.
    */
-  numerifyencode(str: string = ""): string {
+  numerify(str: string = ""): string {
     const chars: string =
       "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%()*+,-./\\:;=?@[]^_`{|}~\"'&<> ";
     let r: string = "";
