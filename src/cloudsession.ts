@@ -50,8 +50,8 @@ class CloudSession extends EventEmitter {
       }
     );
     let self = this;
-    let handshake = this.sendHandshake;
-    let sendPacket = this.sendPacket;
+    let handshake = this.sendHandshake.bind(this);
+    let sendPacket = this.sendPacket.bind(this);
     this.connection.on("open", function () {
       handshake();
 
@@ -72,7 +72,7 @@ class CloudSession extends EventEmitter {
     });
     let s: string = "";
 
-    let handlePacket = this.handlePacket;
+    let handlePacket = this.handlePacket.bind(this);
     if (!this.usetw) {
       this.connection.on("message", function (c: string) {
         s += c;
